@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DTL Симулятор — ООО «Доминант»</title>
+<title>DTL · Весы + П&Л · ООО «Доминант»</title>
 <style>
 :root{
   --bg:#f0efe9;--bg1:#fff;--bg2:#f5f4ee;--bg3:#e8e7e0;
@@ -14,519 +14,606 @@
   --ca:#BA7517;--ca0:#FAEEDA;--ca8:#633806;
   --cr:#A32D2D;--cr0:#FCEBEB;--cr8:#791F1F;
   --cp:#533AB7;--cp0:#EDE9FB;--cp8:#3A2680;
+  --ct:#1D9E75;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
-.page{max-width:1200px;margin:0 auto;padding:20px 16px}
-header{margin-bottom:14px}
-header h1{font-size:18px;font-weight:700;letter-spacing:-.3px}
-header p{font-size:11px;color:var(--tx2);margin-top:3px}
-.layout{display:grid;grid-template-columns:300px 1fr;gap:12px;align-items:start}
-@media(max-width:840px){.layout{grid-template-columns:1fr}}
-.card{background:var(--bg1);border:.5px solid var(--br);border-radius:10px;padding:13px}
-/* risk banner */
-.rb{display:flex;align-items:flex-start;gap:8px;padding:8px 11px;border-radius:7px;border-left:4px solid;margin-bottom:11px;transition:all .3s}
-.rb-lv{font-size:11px;font-weight:700}.rb-ds{font-size:10px;color:var(--tx2);margin-top:1px}
-/* slider groups */
-.grp{margin-bottom:11px}
-.grp-title{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:4px 8px;border-radius:5px;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.page{max-width:1240px;margin:0 auto;padding:18px 14px}
+h1{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-bottom:3px}
+.sub{font-size:10px;color:var(--tx2);margin-bottom:12px}
+.layout{display:grid;grid-template-columns:294px 1fr;gap:11px;align-items:start}
+@media(max-width:860px){.layout{grid-template-columns:1fr}}
+.card{background:var(--bg1);border:.5px solid var(--br);border-radius:10px;padding:12px}
+.rb{display:flex;align-items:flex-start;gap:8px;padding:8px 11px;border-radius:7px;border-left:4px solid;margin-bottom:10px;transition:all .3s}
+.rb-lv{font-size:11px;font-weight:700}.rb-ds{font-size:9.5px;color:var(--tx2);margin-top:1px}
+.gt{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:4px 8px;border-radius:5px;margin-bottom:7px;display:flex;align-items:center;gap:5px}
 .sl{margin-bottom:6px}
 .sl-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px}
 .sl-nm{font-size:11px;font-weight:600;color:var(--tx)}
 .sl-sub{font-size:9px;color:var(--tx3);margin-left:3px}
-.sl-v{font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;border:1px solid var(--br2);min-width:44px;text-align:center;transition:color .2s;background:var(--bg1);white-space:nowrap}
+.sl-v{font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px;border:1px solid var(--br2);min-width:48px;text-align:center;transition:color .2s;background:var(--bg1)}
 .sl-h{font-size:9px;color:var(--tx3);margin-top:1px}
+.adj{font-size:9px;color:var(--ca8);font-style:italic;margin-top:1px;min-height:12px}
 input[type=range]{width:100%;height:4px;border-radius:2px;cursor:pointer;display:block}
-/* scenarios */
-.sc-g{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:10px}
-.sc-b{padding:6px 4px;border-radius:6px;border:.5px solid var(--br2);background:var(--bg2);font-size:9px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s;line-height:1.4;color:var(--tx2)}
-.sc-b:hover{background:var(--bg3)}.sc-b.on{border:1.5px solid;background:var(--bg1)}
-/* right col */
-.rcol{display:flex;flex-direction:column;gap:10px}
-/* metrics */
-.mg3{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.mg4{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.mc{background:var(--bg2);border-radius:7px;padding:8px 9px;border-left:2px solid var(--br2)}
+.loop-box{border-radius:7px;padding:7px 9px;margin-top:5px;border-left:3px solid;transition:all .3s;font-size:9px}
+.lr{display:flex;justify-content:space-between;margin-top:3px;font-size:9px}
+.mkt-g{display:flex;flex-direction:column;gap:4px;margin-top:5px}
+.mb{padding:6px 9px;border-radius:7px;border:.5px solid var(--br2);background:var(--bg2);font-size:10px;font-weight:600;cursor:pointer;text-align:left;transition:all .15s;display:flex;align-items:center;gap:7px;color:var(--tx2)}
+.mb:hover{background:var(--bg3)}.mb.on{border-width:1.5px;background:var(--bg1)}
+.mi{font-size:8.5px;font-weight:400;color:var(--tx3);margin-left:auto;text-align:right;max-width:110px;line-height:1.3}
+.sc-g{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:9px}
+.sc-b{padding:5px 3px;border-radius:6px;border:.5px solid var(--br2);background:var(--bg2);font-size:9px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s;line-height:1.4;color:var(--tx2)}
+.sc-b:hover{background:var(--bg3)}.sc-b.on{border-width:1.5px;background:var(--bg1)}
+.rcol{display:flex;flex-direction:column;gap:9px}
+.mg3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.mg4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.mc{background:var(--bg2);border-radius:7px;padding:7px 9px;border-left:2px solid var(--br2)}
 .mc-l{font-size:9px;color:var(--tx2);margin-bottom:2px}
-.mc-v{font-size:18px;font-weight:700;transition:color .25s;line-height:1.1}
+.mc-v{font-size:17px;font-weight:700;transition:color .25s;line-height:1.1}
 .mc-s{font-size:8px;color:var(--tx3);margin-top:1px}
-/* history */
+.mkt-panel{border-radius:8px;padding:9px 11px;border-left:4px solid;transition:all .3s}
+.mpt{font-size:11px;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:6px}
+.mpr{display:flex;justify-content:space-between;font-size:9.5px;color:var(--tx2);padding:2px 0;border-bottom:.5px solid var(--br)}
+.mpr:last-child{border-bottom:none}
+.mpr b{font-size:10px;font-weight:700}
 .hg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
 .hc{border-radius:7px;padding:8px 9px;border-left:3px solid}
-footer{margin-top:14px;font-size:9px;color:var(--tx3);text-align:center;line-height:1.7}
+footer{margin-top:12px;font-size:9px;color:var(--tx3);text-align:center;line-height:1.7}
 </style>
 </head>
 <body>
 <div class="page">
-<header>
-  <h1>⚖️ Весы на рычаге Архимеда · DTL-симулятор · ООО «Доминант»</h1>
-  <p>DOL × DFL = DTL · Операционный + Финансовый + Дивиденды · Фулькрум = дифференциал · M&amp;M (1963) · Дамодаран (2002) · Майерс (1984)</p>
-</header>
+<h1>⚖️ Симулятор DTL · Весы + П&Л в рублях · Петля · Тип рынка · ООО «Доминант»</h1>
+<div class="sub">Весы на рычаге Архимеда · Под весами — П&Л в ₽ · BEP-линия пронизывает обе части · DOL × DFL = DTL · Brander-Lewis (1986) · Fazzari-Hubbard-Petersen (1988)</div>
 
 <div class="layout">
-<!-- ===== LEFT: SLIDERS ===== -->
+<!-- ===== LEFT ===== -->
 <div>
-  <div class="rb" id="rb">
-    <div style="font-size:17px;flex-shrink:0;margin-top:1px">⚠️</div>
-    <div><div class="rb-lv" id="rb-lv">Совокупный риск (DTL)…</div><div class="rb-ds" id="rb-ds"></div></div>
-  </div>
-
-  <!-- OPERATIONAL -->
-  <div class="grp">
-    <div class="grp-title" style="background:var(--cb0);color:var(--cb8)">🏭 Операционный рычаг (DOL)</div>
+  <div class="rb" id="rb"><div style="font-size:16px;flex-shrink:0;margin-top:1px">⚠️</div>
+    <div><div class="rb-lv" id="rb-lv">DTL…</div><div class="rb-ds" id="rb-ds"></div></div></div>
+  <div class="card">
+    <div class="gt" style="background:var(--cb0);color:var(--cb8)">🏭 DOL — операционный рычаг</div>
     <div class="sl">
       <div class="sl-top"><span><span class="sl-nm">📦 Выручка</span><span class="sl-sub">масштаб</span></span><span class="sl-v" id="vsc">×1.00</span></div>
-      <input type="range" min=".5" max="2.5" step=".05" value="1" id="sc" oninput="U()" style="accent-color:var(--cb)">
-      <div class="sl-h">База: 429 393 тыс. ₽ · Влияет на BEP и запас прочности</div>
+      <input type="range" min=".5" max="2.5" step=".05" value="1" id="isc" oninput="U()" style="accent-color:var(--cb)">
+      <div class="sl-h">База: 429 393 тыс. ₽ · шкала П&Л под весами обновляется</div>
+      <div class="adj" id="sc-adj"></div>
     </div>
     <div class="sl">
       <div class="sl-top"><span><span class="sl-nm">📊 Перем. затраты</span><span class="sl-sub">% выручки</span></span><span class="sl-v" id="vvar">73%</span></div>
-      <input type="range" min="50" max="94" step="1" value="73" id="var" oninput="U()" style="accent-color:var(--cb)">
-      <div class="sl-h">КМД = 100% − перем. · При ↑ → BEP растёт, DOL падает</div>
+      <input type="range" min="50" max="94" step="1" value="73" id="ivar" oninput="U()" style="accent-color:var(--cb)">
+      <div class="sl-h">Красная полоса П&Л · Петля двигает вверх</div>
+      <div class="adj" id="var-adj"></div>
     </div>
     <div class="sl">
-      <div class="sl-top"><span><span class="sl-nm">🏗 Пост. затраты</span><span class="sl-sub">млн ₽ (вкл. бонусы)</span></span><span class="sl-v" id="vfix">78 млн</span></div>
-      <input type="range" min="20" max="160" step="1" value="78" id="fix" oninput="U()" style="accent-color:var(--cb)">
-      <div class="sl-h">Аренда + ФОТ управления + амортизация + премии</div>
+      <div class="sl-top"><span><span class="sl-nm">🏗 Пост. затраты</span><span class="sl-sub">млн ₽</span></span><span class="sl-v" id="vfix">78 млн</span></div>
+      <input type="range" min="20" max="160" step="1" value="78" id="ifix" oninput="U()" style="accent-color:var(--cb)">
+      <div class="sl-h">Оранжевая полоса П&Л · ФОТ + аренда + бонусы</div>
     </div>
-  </div>
-
-  <!-- FINANCIAL -->
-  <div class="grp">
-    <div class="grp-title" style="background:var(--cg0);color:var(--cg8)">💰 Финансовый рычаг (DFL)</div>
+    <div class="gt" style="background:var(--cg0);color:var(--cg8);margin-top:8px">💰 DFL — финансовый рычаг</div>
     <div class="sl">
-      <div class="sl-top"><span><span class="sl-nm">⚖️ Плечо D/E</span><span class="sl-sub">ЗК ÷ СК</span></span><span class="sl-v" id="vde">0.92</span></div>
-      <input type="range" min=".1" max="3" step=".05" value=".92" id="de" oninput="U()" style="accent-color:var(--cg)">
-      <div class="sl-h">Длина плеча · Оптимум 0.50–0.70 · Усиливает всё</div>
+      <div class="sl-top"><span><span class="sl-nm">⚖️ Плечо D/E</span></span><span class="sl-v" id="vde">0.92</span></div>
+      <input type="range" min=".1" max="3" step=".05" value=".92" id="ide" oninput="U()" style="accent-color:var(--cg)">
+      <div class="sl-h">Длина плеча · Оптимум зависит от рынка</div>
     </div>
     <div class="sl">
-      <div class="sl-top"><span><span class="sl-nm">💳 Ставка r</span><span class="sl-sub">цена долга, %</span></span><span class="sl-v" id="vr">27%</span></div>
-      <input type="range" min="5" max="42" step=".5" value="27" id="r" oninput="U()" style="accent-color:var(--cg)">
-      <div class="sl-h">Двигает фулькрум влево · При r≥ROA — перегиб</div>
+      <div class="sl-top"><span><span class="sl-nm">💳 Ставка r</span><span class="sl-sub">%</span></span><span class="sl-v" id="vr">27%</span></div>
+      <input type="range" min="5" max="42" step=".5" value="27" id="ir" oninput="U()" style="accent-color:var(--cg)">
+      <div class="sl-h">Тёмно-красная полоса (Проценты) в П&Л</div>
     </div>
     <div class="sl">
-      <div class="sl-top"><span><span class="sl-nm">📈 ROA</span><span class="sl-sub">рентабельность активов</span></span><span class="sl-v" id="vroa">27.4%</span></div>
-      <input type="range" min="5" max="55" step=".5" value="27.4" id="roa" oninput="U()" style="accent-color:var(--cg)">
-      <div class="sl-h">Двигает фулькрум вправо · Потолок для ставки</div>
+      <div class="sl-top"><span><span class="sl-nm">📈 ROA</span></span><span class="sl-v" id="vroa">27.4%</span></div>
+      <input type="range" min="5" max="55" step=".5" value="27.4" id="iroa" oninput="U()" style="accent-color:var(--cg)">
+      <div class="sl-h">Рынок и петля корректируют ROA</div>
+      <div class="adj" id="roa-adj"></div>
     </div>
     <div class="sl">
       <div class="sl-top"><span><span class="sl-nm">🧾 Налог T</span><span class="sl-sub">%</span></span><span class="sl-v" id="vtax">25%</span></div>
-      <input type="range" min="0" max="35" step="1" value="25" id="tax" oninput="U()" style="accent-color:var(--cg)">
-      <div class="sl-h">EFL × (1−T) · Рост 20→25% в 2025 г.</div>
+      <input type="range" min="0" max="35" step="1" value="25" id="itax" oninput="U()" style="accent-color:var(--cg)">
+      <div class="sl-h">EFL × (1−T)</div>
     </div>
-  </div>
-
-  <!-- DIVIDENDS -->
-  <div class="grp">
-    <div class="grp-title" style="background:var(--cp0);color:var(--cp8)">🎯 Распределение прибыли</div>
+    <div class="gt" style="background:var(--cp0);color:var(--cp8);margin-top:8px">🔄 Дивиденды + Петля</div>
     <div class="sl">
-      <div class="sl-top"><span><span class="sl-nm">💎 Дивиденды</span><span class="sl-sub">% от чистой прибыли</span></span><span class="sl-v" id="vdiv">15%</span></div>
-      <input type="range" min="0" max="80" step="5" value="15" id="div" oninput="U()" style="accent-color:var(--cp)">
-      <div class="sl-h">↑ Дивиденды → ↓ СК → ↑ D/E (Pecking Order, Myers 1984)</div>
+      <div class="sl-top"><span><span class="sl-nm">💎 Дивиденды</span><span class="sl-sub">% чистой прибыли</span></span><span class="sl-v" id="vdiv">15%</span></div>
+      <input type="range" min="0" max="80" step="5" value="15" id="idiv" oninput="U()" style="accent-color:var(--cp)">
+      <div class="sl-h">До 25% — норма. Выше — петля активна</div>
     </div>
-  </div>
-
-  <!-- SCENARIOS -->
-  <div class="sc-g">
-    <button class="sc-b" id="b-cons" style="color:var(--cg8);border-color:var(--cg)" onclick="AS('cons')">Консерв.<br>D/E 0.40</button>
-    <button class="sc-b" id="b-opt"  style="color:var(--cb8);border-color:var(--cb)" onclick="AS('opt')">✅ Оптим.<br>D/E 0.60</button>
-    <button class="sc-b on" id="b-fact" style="color:var(--cr8);border-color:var(--cr)" onclick="AS('fact')">Факт 2025<br>D/E 0.92</button>
-    <button class="sc-b" id="b-aggr" style="color:var(--ca8);border-color:var(--ca)" onclick="AS('aggr')">Агрессив.<br>D/E 1.30</button>
+    <div class="loop-box" id="loop-box">
+      <div style="font-weight:700" id="loop-ttl">🟢 Петля неактивна</div>
+      <div class="lr"><span style="color:var(--tx2)">Перем. затраты</span><span id="lv" style="font-weight:700">—</span></div>
+      <div class="lr"><span style="color:var(--tx2)">Выручка</span><span id="ls" style="font-weight:700">—</span></div>
+      <div class="lr"><span style="color:var(--tx2)">ROA потеря</span><span id="lr" style="font-weight:700">—</span></div>
+      <div style="font-size:8px;color:var(--tx3);margin-top:3px;line-height:1.4" id="lref"></div>
+    </div>
+    <div class="gt" style="background:var(--bg3);color:var(--tx2);margin-top:8px">🏪 Тип рынка</div>
+    <div class="mkt-g">
+      <button class="mb" id="mb-mono"    onclick="sM('mono')"   >👑 <span>Монополия</span>         <span class="mi">ROA+8% · D/E до 1.5</span></button>
+      <button class="mb on" id="mb-cournot" onclick="sM('cournot')">⚔️ <span>Олигополия Курно</span>  <span class="mi">Долг=оружие · BL'86</span></button>
+      <button class="mb" id="mb-duopoly" onclick="sM('duopoly')">♟️ <span>Дуополия</span>           <span class="mi">Лидер vs ведомый</span></button>
+      <button class="mb" id="mb-bertrand"onclick="sM('bertrand')">🔥 <span>Олигополия Бертран</span><span class="mi">Ценовая война · D/E≤0.7</span></button>
+      <button class="mb" id="mb-perfect" onclick="sM('perfect')">🌊 <span>Совершенная конкуренция</span><span class="mi">Рычаг опасен · D/E≤0.4</span></button>
+    </div>
+    <div class="sc-g">
+      <button class="sc-b" id="b-cons"  style="color:var(--cg8);border-color:var(--cg)"  onclick="AS('cons')">Консерв.<br>D/E 0.40</button>
+      <button class="sc-b" id="b-opt"   style="color:var(--cb8);border-color:var(--cb)"  onclick="AS('opt')">✅ Оптим.<br>D/E 0.60</button>
+      <button class="sc-b on" id="b-fact" style="color:var(--cr8);border-color:var(--cr)" onclick="AS('fact')">Факт 2025<br>D/E 0.92</button>
+      <button class="sc-b" id="b-aggr"  style="color:var(--ca8);border-color:var(--ca)"  onclick="AS('aggr')">Агрессив.<br>D/E 1.30</button>
+    </div>
   </div>
 </div>
 
-<!-- ===== RIGHT: SVG + METRICS ===== -->
+<!-- ===== RIGHT ===== -->
 <div class="rcol">
 
-  <!-- SVG IMMEDIATELY -->
-  <div class="card" style="padding:8px">
-    <svg id="viz" viewBox="0 0 560 345" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;overflow:hidden">
-      <!-- zones -->
-      <rect x="0" y="0" width="280" height="267" fill="#FCEBEB" opacity=".55"/>
-      <rect x="280" y="0" width="280" height="267" fill="#EAF3DE" opacity=".55"/>
-      <!-- zone labels -->
-      <text x="107" y="16" text-anchor="middle" font-size="10" font-weight="700" fill="#791F1F" font-family="Segoe UI,sans-serif">ЗОНА УБЫТКА</text>
-      <text x="107" y="27" text-anchor="middle" font-size="8" fill="#791F1F" font-family="Segoe UI,sans-serif">r &gt; ROA · рычаг разрушает стоимость</text>
-      <text x="453" y="16" text-anchor="middle" font-size="10" font-weight="700" fill="#27500A" font-family="Segoe UI,sans-serif">ЗОНА ПРИБЫЛИ</text>
-      <text x="453" y="27" text-anchor="middle" font-size="8" fill="#27500A" font-family="Segoe UI,sans-serif">r &lt; ROA · рычаг создаёт ценность</text>
-      <!-- tipping point line -->
-      <line x1="280" y1="0" x2="280" y2="267" stroke="#BA7517" stroke-width="2" stroke-dasharray="7,4" opacity=".85"/>
-      <!-- tipping point label -->
-      <rect x="208" y="39" width="144" height="28" rx="5" fill="#FAEEDA" opacity=".92"/>
-      <text x="280" y="52" text-anchor="middle" font-size="9.5" font-weight="700" fill="#633806" font-family="Segoe UI,sans-serif">ТОЧКА ПЕРЕГИБА</text>
-      <text x="280" y="63" text-anchor="middle" font-size="8" fill="#633806" font-family="Segoe UI,sans-serif">дифференциал = 0 · r = ROA</text>
-      <!-- ground -->
-      <rect x="0" y="267" width="560" height="78" fill="#D3D1C7"/>
-      <line x1="0" y1="267" x2="560" y2="267" stroke="#B4B2A9" stroke-width="1"/>
-      <!-- fulcrum track -->
-      <rect x="62" y="263" width="436" height="5" rx="2.5" fill="#A8A6A0"/>
-      <!-- fulcrum shadow -->
-      <ellipse id="fc-sh" cx="280" cy="268" rx="20" ry="4" fill="rgba(0,0,0,.16)"/>
-      <!-- fulcrum triangle -->
-      <polygon id="fc-tri" points="280,222 264,267 296,267" fill="#5F5E5A"/>
-      <!-- fulcrum label -->
-      <text id="fc-lbl" x="280" y="281" text-anchor="middle" font-size="9" font-weight="700" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Δ = +0.4%</text>
-      <!-- beam group -->
-      <g id="bm-g">
-        <rect id="bm-r" x="65" y="217" width="430" height="10" rx="3" fill="#185FA5"/>
-        <!-- beam center dot -->
-        <circle cx="280" cy="222" r="3" fill="#0C447C" opacity=".5"/>
-        <!-- D/E weight -->
-        <rect id="de-w" x="370" y="205" width="42" height="20" rx="3" fill="#185FA5" opacity=".72"/>
-        <text id="de-wt" x="391" y="218" text-anchor="middle" font-size="8" fill="white" font-weight="700" font-family="Segoe UI,sans-serif">D/E</text>
-      </g>
-      <!-- LEFT string + pan -->
-      <line id="sl" x1="85" y1="217" x2="85" y2="264" stroke="#888780" stroke-width="1.5"/>
-      <rect id="pl" x="58" y="264" width="55" height="8" rx="2" fill="#A32D2D"/>
-      <text id="plt1" x="85" y="279" text-anchor="middle" font-size="9" font-weight="700" fill="#791F1F" font-family="Segoe UI,sans-serif">УБЫТОК</text>
-      <text id="plt2" x="85" y="290" text-anchor="middle" font-size="7.5" fill="#888780" font-family="Segoe UI,sans-serif">r &gt; ROA</text>
-      <!-- RIGHT string + pan -->
-      <line id="sr" x1="475" y1="217" x2="475" y2="264" stroke="#888780" stroke-width="1.5"/>
-      <rect id="pr" x="448" y="264" width="55" height="8" rx="2" fill="#3B6D11"/>
-      <text id="prt1" x="475" y="279" text-anchor="middle" font-size="9" font-weight="700" fill="#27500A" font-family="Segoe UI,sans-serif">ROE ↑</text>
-      <text id="prt2" x="475" y="290" text-anchor="middle" font-size="7.5" fill="#888780" font-family="Segoe UI,sans-serif">EFL +</text>
-      <!-- central EFL display -->
-      <text id="ea" x="280" y="125" text-anchor="middle" font-size="24" fill="#185FA5" opacity=".7" font-family="Segoe UI,sans-serif">⇄</text>
-      <text id="ev" x="280" y="160" text-anchor="middle" font-size="15" font-weight="700" fill="#185FA5" font-family="Segoe UI,sans-serif">EFL = +0.4%</text>
-      <text id="ev2" x="280" y="176" text-anchor="middle" font-size="8.5" fill="#888780" font-family="Segoe UI,sans-serif">изменение ROE от рычага</text>
-      <!-- DOL/DFL/DTL badges -->
-      <rect x="8" y="272" width="76" height="32" rx="5" fill="var(--cb0,#E6F1FB)" opacity=".9"/>
-      <text x="46" y="284" text-anchor="middle" font-size="8" fill="#0C447C" font-family="Segoe UI,sans-serif">DOL</text>
-      <text id="svg-dol" x="46" y="298" text-anchor="middle" font-size="12" font-weight="700" fill="#0C447C" font-family="Segoe UI,sans-serif">—</text>
-      <rect x="242" y="272" width="76" height="32" rx="5" fill="#FAEEDA" opacity=".9"/>
-      <text x="280" y="284" text-anchor="middle" font-size="8" fill="#633806" font-family="Segoe UI,sans-serif">DFL</text>
-      <text id="svg-dfl" x="280" y="298" text-anchor="middle" font-size="12" font-weight="700" fill="#633806" font-family="Segoe UI,sans-serif">—</text>
-      <rect x="476" y="272" width="76" height="32" rx="5" fill="#EDE9FB" opacity=".9"/>
-      <text x="514" y="284" text-anchor="middle" font-size="8" fill="#3A2680" font-family="Segoe UI,sans-serif">DTL</text>
-      <text id="svg-dtl" x="514" y="298" text-anchor="middle" font-size="12" font-weight="700" fill="#3A2680" font-family="Segoe UI,sans-serif">—</text>
-      <!-- BEP indicator line in profit zone -->
-      <line id="bep-line" x1="350" y1="0" x2="350" y2="267" stroke="#185FA5" stroke-width="1.5" stroke-dasharray="4,3" opacity=".5"/>
-      <text id="bep-lbl" x="355" y="200" font-size="8" fill="#185FA5" font-family="Segoe UI,sans-serif" opacity=".8">BEP</text>
-    </svg>
-  </div>
+<!-- SVG: ВЕСЫ + П&Л В РУБЛЯХ -->
+<div class="card" style="padding:7px">
+<svg id="viz" viewBox="0 0 560 440" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;overflow:hidden">
 
-  <!-- EFL + formula -->
-  <div class="card" style="padding:10px 13px">
-    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
-      <div id="efl-big" style="font-size:42px;font-weight:700;letter-spacing:-2px;transition:color .3s">+0.4%</div>
-      <div>
-        <div style="font-size:11px;color:var(--tx2)" id="efl-meta">Эффект финансового рычага · ROE = —</div>
-        <div style="font-size:10px;font-family:monospace;color:var(--tx3);margin-top:2px" id="efl-form">EFL = (ROA − r) × D/E × (1−T)</div>
-      </div>
-    </div>
-  </div>
+  <!-- ══ ЗОНЫ ВЕСОВ ══ -->
+  <rect x="0" y="0" width="280" height="256" fill="#FCEBEB" opacity=".55"/>
+  <rect x="280" y="0" width="280" height="256" fill="#EAF3DE" opacity=".55"/>
+  <text x="107" y="14" text-anchor="middle" font-size="9.5" font-weight="700" fill="#791F1F" font-family="Segoe UI,sans-serif">ЗОНА УБЫТКА</text>
+  <text x="107" y="24" text-anchor="middle" font-size="7.5" fill="#791F1F" font-family="Segoe UI,sans-serif">r &gt; ROA · рычаг разрушает стоимость</text>
+  <text x="453" y="14" text-anchor="middle" font-size="9.5" font-weight="700" fill="#27500A" font-family="Segoe UI,sans-serif">ЗОНА ПРИБЫЛИ</text>
+  <text x="453" y="24" text-anchor="middle" font-size="7.5" fill="#27500A" font-family="Segoe UI,sans-serif">r &lt; ROA · рычаг создаёт ценность</text>
 
-  <!-- THREE LEVERAGES -->
-  <div class="mg3">
-    <div class="mc" style="border-left-color:var(--cb)">
-      <div class="mc-l">DOL — операционный рычаг</div>
-      <div class="mc-v" id="m-dol">—</div>
-      <div class="mc-s">КМД ÷ EBIT · на 1% выручки → ?% EBIT</div>
-    </div>
-    <div class="mc" style="border-left-color:var(--ca)">
-      <div class="mc-l">DFL — финансовый рычаг</div>
-      <div class="mc-v" id="m-dfl">—</div>
-      <div class="mc-s">EBIT ÷ EBT · на 1% EBIT → ?% прибыли</div>
-    </div>
-    <div class="mc" style="border-left-color:var(--cp)">
-      <div class="mc-l">DTL — совокупный рычаг</div>
-      <div class="mc-v" id="m-dtl">—</div>
-      <div class="mc-s">DOL × DFL · полный риск бизнеса</div>
-    </div>
-  </div>
+  <!-- Точка перегиба -->
+  <line x1="280" y1="0" x2="280" y2="256" stroke="#BA7517" stroke-width="2" stroke-dasharray="6,4" opacity=".85"/>
+  <rect x="212" y="36" width="136" height="26" rx="5" fill="#FAEEDA" opacity=".92"/>
+  <text x="280" y="49" text-anchor="middle" font-size="9" font-weight="700" fill="#633806" font-family="Segoe UI,sans-serif">ТОЧКА ПЕРЕГИБА</text>
+  <text x="280" y="59" text-anchor="middle" font-size="7.5" fill="#633806" font-family="Segoe UI,sans-serif">r = ROA · дифференциал = 0</text>
 
-  <!-- METRICS ROW 2 -->
-  <div class="mg4">
-    <div class="mc" style="border-left-color:var(--cg)">
-      <div class="mc-l">Дифференциал</div>
-      <div class="mc-v" id="m-d">—</div>
-      <div class="mc-s">ROA − r · знак рычага</div>
-    </div>
-    <div class="mc" style="border-left-color:var(--cb)">
-      <div class="mc-l">EBIT</div>
-      <div class="mc-v" id="m-ebit">—</div>
-      <div class="mc-s">млн ₽ · операц. прибыль</div>
-    </div>
-    <div class="mc" style="border-left-color:var(--ca)">
-      <div class="mc-l">BEP</div>
-      <div class="mc-v" id="m-bep">—</div>
-      <div class="mc-s">млн ₽ · точка безубыточности</div>
-    </div>
-    <div class="mc" style="border-left-color:var(--cg)">
-      <div class="mc-l">Запас прочности</div>
-      <div class="mc-v" id="m-mos">—</div>
-      <div class="mc-s">над BEP · цель &gt;30%</div>
-    </div>
-  </div>
+  <!-- ══ ЗЕМЛЯ ══ -->
+  <rect x="0" y="256" width="560" height="7" fill="#D3D1C7"/>
+  <line x1="0" y1="256" x2="560" y2="256" stroke="#B4B2A9" stroke-width="1"/>
+  <rect x="62" y="252" width="436" height="5" rx="2.5" fill="#A8A6A0"/>
 
-  <!-- METRICS ROW 3 -->
-  <div class="mg4">
-    <div class="mc" style="border-left-color:var(--cg)">
-      <div class="mc-l">ROE расч.</div>
-      <div class="mc-v" id="m-roe">—</div>
-      <div class="mc-s">ROA + EFL</div>
-    </div>
-    <div class="mc" style="border-left-color:var(--cr)">
-      <div class="mc-l">Нал. щит</div>
-      <div class="mc-v" id="m-sh">—</div>
-      <div class="mc-s">млн ₽ · r×D×(1−T)</div>
-    </div>
-    <div class="mc" style="border-left-color:var(--cp)">
-      <div class="mc-l">Дивиденды</div>
-      <div class="mc-v" id="m-div">—</div>
-      <div class="mc-s">млн ₽ · выплата акционерам</div>
-    </div>
-    <div class="mc" style="border-left-color:var(--cp)">
-      <div class="mc-l">Удержано в СК</div>
-      <div class="mc-v" id="m-ret">—</div>
-      <div class="mc-s">млн ₽ · укрепляет D/E</div>
-    </div>
-  </div>
+  <!-- ══ ФУЛЬКРУМ ══ -->
+  <ellipse id="fc-sh" cx="280" cy="257" rx="19" ry="3.5" fill="rgba(0,0,0,.15)"/>
+  <polygon id="fc-tri" points="280,213 264,256 296,256" fill="#5F5E5A"/>
+  <text id="fc-lbl" x="280" y="269" text-anchor="middle" font-size="8.5" font-weight="700" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Δ=+0.4%</text>
 
-  <!-- HISTORY -->
-  <div class="card" style="padding:11px 13px">
-    <div style="font-size:11px;font-weight:600;margin-bottom:8px">📉 Движение фулькрума 2023–2025: путь к точке перегиба</div>
-    <div class="hg">
-      <div class="hc" style="background:var(--cg0);border-color:var(--cg)">
-        <div style="font-size:10px;font-weight:700;color:var(--cg8)">2023</div>
-        <div style="font-size:9px;color:var(--tx2);margin-top:3px">ROA 24.7% · r 15% · D/E 0.96</div>
-        <div style="font-size:9px">Дифф <b style="color:var(--cg8)">+9.7%</b> · DOL ≈2.1 · DFL ≈1.4</div>
-        <div style="font-size:9px;color:var(--cg8);font-weight:700">EFL 9.7% · DTL ≈ 2.9</div>
-        <div style="font-size:8px;color:var(--tx3);margin-top:2px">Фулькрум глубоко в зоне прибыли</div>
-      </div>
-      <div class="hc" style="background:var(--ca0);border-color:var(--ca)">
-        <div style="font-size:10px;font-weight:700;color:var(--ca8)">2024</div>
-        <div style="font-size:9px;color:var(--tx2);margin-top:3px">ROA 27.1% · r 25% · D/E 1.07</div>
-        <div style="font-size:9px">Дифф <b style="color:var(--ca8)">+2.1%</b> · DOL ≈2.3 · DFL ≈1.8</div>
-        <div style="font-size:9px;color:var(--ca8);font-weight:700">EFL 2.3% · DTL ≈ 4.1</div>
-        <div style="font-size:8px;color:var(--tx3);margin-top:2px">Фулькрум у критической черты</div>
-      </div>
-      <div class="hc" style="background:var(--cr0);border-color:var(--cr)">
-        <div style="font-size:10px;font-weight:700;color:var(--cr8)">2025</div>
-        <div style="font-size:9px;color:var(--tx2);margin-top:3px">ROA 27.4% · r 27% · D/E 0.92</div>
-        <div style="font-size:9px">Дифф <b style="color:var(--cr8)">+0.4%</b> · DOL ≈2.4 · DFL ≈2.1</div>
-        <div style="font-size:9px;color:var(--cr8);font-weight:700">EFL 0.4% · DTL ≈ 5.0</div>
-        <div style="font-size:8px;color:var(--tx3);margin-top:2px">Рычаг у нулевого порога инверсии</div>
-      </div>
+  <!-- ══ БАЛКА ══ -->
+  <g id="bm-g">
+    <rect id="bm-r" x="65" y="208" width="430" height="10" rx="3" fill="#185FA5"/>
+    <circle cx="280" cy="213" r="3" fill="#0C447C" opacity=".5"/>
+    <rect id="de-w" x="370" y="196" width="40" height="18" rx="3" fill="#185FA5" opacity=".72"/>
+    <text id="de-wt" x="390" y="208" text-anchor="middle" font-size="7.5" fill="white" font-weight="700" font-family="Segoe UI,sans-serif">D/E</text>
+  </g>
+
+  <!-- ══ ЛЕВАЯ ЧАША ══ -->
+  <line id="sl" x1="85" y1="208" x2="85" y2="254" stroke="#888780" stroke-width="1.5"/>
+  <rect id="pl" x="58" y="254" width="54" height="7" rx="2" fill="#A32D2D"/>
+  <text id="plt1" x="85" y="269" text-anchor="middle" font-size="8.5" font-weight="700" fill="#791F1F" font-family="Segoe UI,sans-serif">УБЫТОК</text>
+  <text id="plt2" x="85" y="279" text-anchor="middle" font-size="7" fill="#888780" font-family="Segoe UI,sans-serif">r &gt; ROA</text>
+
+  <!-- ══ ПРАВАЯ ЧАША ══ -->
+  <line id="sr" x1="475" y1="208" x2="475" y2="254" stroke="#888780" stroke-width="1.5"/>
+  <rect id="pr" x="448" y="254" width="54" height="7" rx="2" fill="#3B6D11"/>
+  <text id="prt1" x="475" y="269" text-anchor="middle" font-size="8.5" font-weight="700" fill="#27500A" font-family="Segoe UI,sans-serif">ROE ↑</text>
+  <text id="prt2" x="475" y="279" text-anchor="middle" font-size="7" fill="#888780" font-family="Segoe UI,sans-serif">EFL +</text>
+
+  <!-- ══ ЦЕНТР EFL ══ -->
+  <text id="ea" x="280" y="118" text-anchor="middle" font-size="22" fill="#185FA5" opacity=".7" font-family="Segoe UI,sans-serif">⇄</text>
+  <text id="ev" x="280" y="148" text-anchor="middle" font-size="14" font-weight="700" fill="#185FA5" font-family="Segoe UI,sans-serif">EFL = +0.4%</text>
+  <text id="ev2" x="280" y="163" text-anchor="middle" font-size="8" fill="#888780" font-family="Segoe UI,sans-serif">изменение ROE от рычага</text>
+
+  <!-- ══ БЕЙДЖИ DOL / DFL / DTL ══ -->
+  <rect x="8"   y="259" width="72" height="30" rx="4" fill="#E6F1FB" opacity=".9"/>
+  <text x="44"  y="270" text-anchor="middle" font-size="7.5" fill="#0C447C" font-family="Segoe UI,sans-serif">DOL</text>
+  <text id="s-dol" x="44" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#0C447C" font-family="Segoe UI,sans-serif">—</text>
+  <rect x="244" y="259" width="72" height="30" rx="4" fill="#FAEEDA" opacity=".9"/>
+  <text x="280" y="270" text-anchor="middle" font-size="7.5" fill="#633806" font-family="Segoe UI,sans-serif">DFL</text>
+  <text id="s-dfl" x="280" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#633806" font-family="Segoe UI,sans-serif">—</text>
+  <rect x="480" y="259" width="72" height="30" rx="4" fill="#EDE9FB" opacity=".9"/>
+  <text x="516" y="270" text-anchor="middle" font-size="7.5" fill="#3A2680" font-family="Segoe UI,sans-serif">DTL</text>
+  <text id="s-dtl" x="516" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#3A2680" font-family="Segoe UI,sans-serif">—</text>
+  <text id="s-mkt" x="556" y="256" text-anchor="end" font-size="8" fill="#888780" font-family="Segoe UI,sans-serif"></text>
+
+  <!-- ════════════════════════════════════════════════
+       П&Л В РУБЛЯХ — ПОД ВЕСАМИ
+       ════════════════════════════════════════════════ -->
+
+  <!-- Фон секции П&Л -->
+  <rect x="0" y="295" width="560" height="145" fill="#F8F7F1"/>
+  <line x1="0" y1="295" x2="560" y2="295" stroke="#C8C6BE" stroke-width="1"/>
+
+  <!-- Заголовок -->
+  <text x="280" y="308" text-anchor="middle" font-size="9" font-weight="700" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Структура П&amp;Л в рублях · все полосы в масштабе выручки</text>
+
+  <!-- BEP вертикальная линия через всю П&Л секцию -->
+  <line id="pl-bep-ln" x1="370" y1="296" x2="370" y2="435" stroke="#BA7517" stroke-width="1.5" stroke-dasharray="5,3" opacity=".85"/>
+  <text id="pl-bep-t" x="370" y="309" text-anchor="middle" font-size="7.5" fill="#BA7517" font-family="Segoe UI,sans-serif" font-weight="700">BEP</text>
+
+  <!-- Запас прочности (зона между BEP и концом выручки) -->
+  <rect id="pl-mos" x="370" y="313" width="90" height="11" fill="#3B6D11" opacity=".15" rx="1"/>
+  <text id="pl-mos-t" x="415" y="322" text-anchor="middle" font-size="7" fill="#3B6D11" font-family="Segoe UI,sans-serif">МБ</text>
+
+  <!-- Петля-стрелка (видна при активной петле) -->
+  <g id="loop-arr" opacity="0">
+    <path d="M 440 355 Q 510 340 500 325" stroke="#993C1D" stroke-width="1.5" fill="none" stroke-dasharray="4,2" marker-end="url(#arr)"/>
+    <text x="510" y="342" font-size="7.5" fill="#993C1D" font-family="Segoe UI,sans-serif" font-weight="700">петля↑</text>
+  </g>
+
+  <!-- Строка 1: ВЫРУЧКА -->
+  <text x="116" y="322" text-anchor="end" font-size="8.5" fill="#27500A" font-weight="700" font-family="Segoe UI,sans-serif">Выручка</text>
+  <rect id="pl-rev" x="120" y="312" width="370" height="11" rx="2" fill="#3B6D11" opacity=".78"/>
+  <text id="pl-lrev" x="495" y="322" font-size="8.5" fill="#27500A" font-weight="700" font-family="Segoe UI,sans-serif">429 млн</text>
+
+  <!-- Строка 2: ПЕРЕМЕННЫЕ ЗАТРАТЫ -->
+  <text x="116" y="335" text-anchor="end" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">Перем. затр.</text>
+  <rect id="pl-var" x="120" y="325" width="270" height="11" rx="2" fill="#A32D2D" opacity=".72"/>
+  <text id="pl-lvar" x="495" y="335" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">313 млн</text>
+
+  <!-- Строка 3: КМД -->
+  <text x="116" y="348" text-anchor="end" font-size="8.5" fill="#0C447C" font-weight="700" font-family="Segoe UI,sans-serif">КМД</text>
+  <rect id="pl-cm" x="120" y="338" width="100" height="11" rx="2" fill="#185FA5" opacity=".75"/>
+  <text id="pl-lcm" x="495" y="348" font-size="8.5" fill="#0C447C" font-weight="700" font-family="Segoe UI,sans-serif">116 млн</text>
+
+  <!-- Строка 4: ПОСТОЯННЫЕ ЗАТРАТЫ -->
+  <text x="116" y="361" text-anchor="end" font-size="8.5" fill="#633806" font-weight="700" font-family="Segoe UI,sans-serif">Пост. затраты</text>
+  <rect id="pl-fix" x="120" y="351" width="67" height="11" rx="2" fill="#BA7517" opacity=".75"/>
+  <text id="pl-lfix" x="495" y="361" font-size="8.5" fill="#633806" font-weight="700" font-family="Segoe UI,sans-serif">78 млн</text>
+
+  <!-- Строка 5: EBIT -->
+  <text x="116" y="374" text-anchor="end" font-size="8.5" fill="#27500A" font-weight="700" font-family="Segoe UI,sans-serif">EBIT</text>
+  <rect id="pl-ebit" x="120" y="364" width="33" height="11" rx="2" fill="#1D9E75" opacity=".85"/>
+  <text id="pl-lebit" x="495" y="374" font-size="8.5" fill="#1D9E75" font-weight="700" font-family="Segoe UI,sans-serif">38 млн</text>
+
+  <!-- Строка 6: ПРОЦЕНТЫ -->
+  <text x="116" y="387" text-anchor="end" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">Проценты (r)</text>
+  <rect id="pl-int" x="120" y="377" width="29" height="11" rx="2" fill="#791F1F" opacity=".72"/>
+  <text id="pl-lint" x="495" y="387" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">34 млн</text>
+
+  <!-- Строка 7: ЧИСТАЯ ПРИБЫЛЬ -->
+  <text x="116" y="400" text-anchor="end" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">Чист. прибыль</text>
+  <rect id="pl-net" x="120" y="390" width="3" height="11" rx="2" fill="#533AB7" opacity=".85"/>
+  <text id="pl-lnet" x="495" y="400" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">3 млн</text>
+
+  <!-- Строка 8: ДИВИДЕНДЫ -->
+  <text x="116" y="413" text-anchor="end" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">Дивиденды</text>
+  <rect id="pl-div" x="120" y="403" width="2" height="11" rx="2" fill="#533AB7" opacity=".50"/>
+  <text id="pl-ldiv" x="495" y="413" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">0.5 млн</text>
+
+  <!-- Строка 9: НЕРАСПРЕДЕЛЁННАЯ ПРИБЫЛЬ -->
+  <text x="116" y="426" text-anchor="end" font-size="8.5" fill="#3B6D11" font-weight="700" font-family="Segoe UI,sans-serif">Удержано в СК</text>
+  <rect id="pl-ret" x="120" y="416" width="2" height="11" rx="2" fill="#3B6D11" opacity=".85"/>
+  <text id="pl-lret" x="495" y="426" font-size="8.5" fill="#3B6D11" font-weight="700" font-family="Segoe UI,sans-serif">2.5 млн</text>
+
+  <!-- Легенда П&Л -->
+  <rect x="120" y="430" width="10" height="6" rx="1" fill="#3B6D11" opacity=".78"/>
+  <text x="133" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Выручка</text>
+  <rect x="183" y="430" width="10" height="6" rx="1" fill="#A32D2D" opacity=".72"/>
+  <text x="196" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Перем.</text>
+  <rect x="236" y="430" width="10" height="6" rx="1" fill="#185FA5" opacity=".75"/>
+  <text x="249" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">КМД</text>
+  <rect x="281" y="430" width="10" height="6" rx="1" fill="#BA7517" opacity=".75"/>
+  <text x="294" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Пост.</text>
+  <rect x="328" y="430" width="10" height="6" rx="1" fill="#1D9E75" opacity=".85"/>
+  <text x="341" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">EBIT</text>
+  <rect x="372" y="430" width="10" height="6" rx="1" fill="#791F1F" opacity=".72"/>
+  <text x="385" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Проценты</text>
+  <rect x="440" y="430" width="10" height="6" rx="1" fill="#533AB7" opacity=".85"/>
+  <text x="453" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Прибыль/Дивид.</text>
+
+</svg>
+</div>
+
+<!-- EFL -->
+<div class="card" style="padding:9px 12px">
+  <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+    <div id="efl-big" style="font-size:38px;font-weight:700;letter-spacing:-2px;transition:color .3s">+0.4%</div>
+    <div>
+      <div style="font-size:11px;color:var(--tx2)" id="efl-meta">Эффект финансового рычага</div>
+      <div style="font-family:monospace;font-size:9px;color:var(--tx3);margin-top:2px" id="efl-form"></div>
     </div>
   </div>
+</div>
+
+<!-- 3 РЫЧАГА -->
+<div class="mg3">
+  <div class="mc" style="border-left-color:var(--cb)"><div class="mc-l">DOL — операционный рычаг</div><div class="mc-v" id="m-dol">—</div><div class="mc-s">КМД÷EBIT · 1% выручки → ?% EBIT</div></div>
+  <div class="mc" style="border-left-color:var(--ca)"><div class="mc-l">DFL — финансовый рычаг</div><div class="mc-v" id="m-dfl">—</div><div class="mc-s">EBIT÷EBT · 1% EBIT → ?% прибыли</div></div>
+  <div class="mc" style="border-left-color:var(--cp)"><div class="mc-l">DTL — совокупный рычаг</div><div class="mc-v" id="m-dtl">—</div><div class="mc-s">DOL × DFL · полный риск бизнеса</div></div>
+</div>
+
+<!-- МЕТРИКИ -->
+<div class="mg4">
+  <div class="mc" style="border-left-color:var(--cg)"><div class="mc-l">Дифференциал Δ</div><div class="mc-v" id="m-d">—</div><div class="mc-s">ROA − r · знак рычага</div></div>
+  <div class="mc" style="border-left-color:var(--cb)"><div class="mc-l">EBIT</div><div class="mc-v" id="m-ebit">—</div><div class="mc-s">млн ₽ · опер. прибыль</div></div>
+  <div class="mc" style="border-left-color:var(--ca)"><div class="mc-l">BEP</div><div class="mc-v" id="m-bep">—</div><div class="mc-s">млн ₽ · безубыточность</div></div>
+  <div class="mc" style="border-left-color:var(--cg)"><div class="mc-l">Запас прочности</div><div class="mc-v" id="m-mos">—</div><div class="mc-s">над BEP · цель &gt;30%</div></div>
+</div>
+<div class="mg4">
+  <div class="mc" style="border-left-color:var(--cg)"><div class="mc-l">ROE расч.</div><div class="mc-v" id="m-roe">—</div><div class="mc-s">ROA + EFL</div></div>
+  <div class="mc" style="border-left-color:var(--cr)"><div class="mc-l">Нал. щит (год.)</div><div class="mc-v" id="m-sh">—</div><div class="mc-s">r×D×T · M&amp;M 1963</div></div>
+  <div class="mc" style="border-left-color:var(--cp)"><div class="mc-l">Дивиденды</div><div class="mc-v" id="m-div">—</div><div class="mc-s">млн ₽</div></div>
+  <div class="mc" style="border-left-color:var(--cp)"><div class="mc-l">Удержано в СК</div><div class="mc-v" id="m-ret">—</div><div class="mc-s">млн ₽</div></div>
+</div>
+
+<!-- РЫНОК ПАНЕЛЬ -->
+<div class="mkt-panel" id="mkt-panel" style="background:var(--cb0);border-color:var(--cb)">
+  <div class="mpt" id="mpt">⚔️ Олигополия (Курно)</div>
+  <div class="mpr"><span>Влияние на ROA</span><b id="mp-roa">—</b></div>
+  <div class="mpr"><span>Оптимальный D/E</span><b id="mp-dopt">—</b></div>
+  <div class="mpr"><span>Ваш D/E vs оптимум</span><b id="mp-dvs">—</b></div>
+  <div class="mpr"><span>Чувствит. к дивидендам</span><b id="mp-vs">—</b></div>
+  <div class="mpr"><span>Стратегия рычага</span><b id="mp-st">—</b></div>
+  <div style="font-size:8.5px;color:var(--tx2);margin-top:5px;line-height:1.4;font-style:italic" id="mp-note"></div>
+</div>
+
+<!-- ИСТОРИЯ -->
+<div class="card" style="padding:10px 12px">
+  <div style="font-size:11px;font-weight:600;margin-bottom:7px">📉 Движение фулькрума 2023–2025</div>
+  <div class="hg">
+    <div class="hc" style="background:var(--cg0);border-color:var(--cg)">
+      <div style="font-size:10px;font-weight:700;color:var(--cg8)">2023</div>
+      <div style="font-size:9px;color:var(--tx2);margin-top:2px">ROA 24.7% · r 15% · D/E 0.96</div>
+      <div style="font-size:9px">Δ <b style="color:var(--cg8)">+9.7%</b> · DTL≈2.9</div>
+      <div style="font-size:8px;color:var(--tx3)">Выручка 279 млн · EBIT 22 млн · прибыль 15 млн</div>
+    </div>
+    <div class="hc" style="background:var(--ca0);border-color:var(--ca)">
+      <div style="font-size:10px;font-weight:700;color:var(--ca8)">2024</div>
+      <div style="font-size:9px;color:var(--tx2);margin-top:2px">ROA 27.1% · r 25% · D/E 1.07</div>
+      <div style="font-size:9px">Δ <b style="color:var(--ca8)">+2.1%</b> · DTL≈4.1</div>
+      <div style="font-size:8px;color:var(--tx3)">Выручка 371 млн · EBIT 27 млн · прибыль 7 млн</div>
+    </div>
+    <div class="hc" style="background:var(--cr0);border-color:var(--cr)">
+      <div style="font-size:10px;font-weight:700;color:var(--cr8)">2025</div>
+      <div style="font-size:9px;color:var(--tx2);margin-top:2px">ROA 27.4% · r 27% · D/E 0.92</div>
+      <div style="font-size:9px">Δ <b style="color:var(--cr8)">+0.4%</b> · DTL≈5.0</div>
+      <div style="font-size:8px;color:var(--tx3)">Выручка 429 млн · EBIT 38 млн · прибыль 3 млн</div>
+    </div>
+  </div>
+</div>
 
 </div><!-- rcol -->
 </div><!-- layout -->
 
 <footer>
-  Modigliani &amp; Miller (1958, 1963) · Damodaran (2002) · Myers &amp; Majluf (1984) · Jensen &amp; Meckling (1976) · Brigham &amp; Gapenski · Trade-off Theory<br>
-  DOL = КМД ÷ EBIT · DFL = EBIT ÷ EBT · DTL = DOL × DFL · EFL = (ROA−r) × D/E × (1−T) · BEP = FC ÷ КМД%<br>
-  Симулятор ООО «Доминант» · Данные 2023–2025 · <a href="https://goxaman2-dot.github.io/dominant-simulator" style="color:var(--cb)">Версия 1 на GitHub Pages</a>
+  Modigliani &amp; Miller (1963) · Damodaran (2002) · Myers &amp; Majluf (1984) · Jensen (1986) · Brander &amp; Lewis (1986) · Chevalier (1995) · Fazzari, Hubbard &amp; Petersen (1988) · Titman &amp; Wessels (1988)<br>
+  DTL = DOL × DFL · EFL = (ROA−r) × D/E × (1−T) · BEP = FC ÷ КМД% · Петля активна при дивидендах &gt; 25%
 </footer>
 </div>
 
 <script>
 const BASE=429393, EQ=137243;
-const SC={
-  cons:{sc:1.0,var:73,fix:78,de:.40,r:22,roa:28,tax:25,div:10},
-  opt: {sc:1.3,var:70,fix:78,de:.60,r:24,roa:32,tax:25,div:20},
-  fact:{sc:1.0,var:73,fix:78,de:.92,r:27,roa:27.4,tax:25,div:15},
-  aggr:{sc:1.8,var:68,fix:90,de:1.3,r:27,roa:35,tax:25,div:30},
+const MKT={
+  mono:    {n:'Монополия',           ic:'👑', rb:8,  vs:.30,rs:.20,dopt:.9, dmax:1.5,c:'#3B6D11',bg:'#EAF3DE',st:'Умеренно-агрессивная',       nt:'Высокая ценовая власть даёт устойчивый ROA. Умеренный долг дисциплинирует менеджмент (Jensen 1986).'},
+  cournot: {n:'Олигополия (Курно)',  ic:'⚔️',rb:4,  vs:.60,rs:.50,dopt:.7, dmax:1.2,c:'#185FA5',bg:'#E6F1FB',st:'Долг — стратегическое оружие', nt:'Брандер и Льюис (1986): долг коммитит фирму на агрессивный выпуск → конкурент отступает.'},
+  duopoly: {n:'Дуополия',            ic:'♟️',rb:3,  vs:.70,rs:.60,dopt:.6, dmax:1.0,c:'#BA7517',bg:'#FAEEDA',st:'Лидер агрессивен, ведомый гибок',nt:'Лидер по Штакельбергу: высокий D/E = коммитмент. Ведомый: низкий D/E = гибкость.'},
+  bertrand:{n:'Олигополия (Бертран)',ic:'🔥',rb:1,  vs:1.0,rs:.90,dopt:.4, dmax:.7, c:'#993C1D',bg:'#FAECE7',st:'Долг опасен — ценовая война',  nt:'Шевалье (1995): конкуренты атакуют цены закредитованных фирм. D/E должно быть минимальным.'},
+  perfect: {n:'Совершенная конкуренция',ic:'🌊',rb:-3,vs:1.3,rs:1.1,dopt:.2,dmax:.4,c:'#A32D2D',bg:'#FCEBEB',st:'Рычаг опасен без выгоды',     nt:'Titman & Wessels (1988): конкурентные отрасли держат минимальный D/E. Дифференциал → 0.'},
 };
+let curMkt='cournot';
+const SC={
+  cons:{sc:1.0,varP:73,fix:78,de:.40,r:22,roa:28,tax:25,div:10},
+  opt: {sc:1.3,varP:70,fix:78,de:.60,r:24,roa:32,tax:25,div:20},
+  fact:{sc:1.0,varP:73,fix:78,de:.92,r:27,roa:27.4,tax:25,div:15},
+  aggr:{sc:1.8,varP:68,fix:90,de:1.3,r:27,roa:35,tax:25,div:30},
+};
+const BL=85,BR=475,BY=213,GY=256,STR=41;
+const PL_BX=120,PL_MAX=370; // П&Л bar area
 
 function gv(id){return parseFloat(document.getElementById(id).value);}
 function el(id){return document.getElementById(id);}
-function sv(id,v,c){const e=el(id);e.textContent=v;if(c)e.style.color=c;}
-function attr(id,a,v){el(id).setAttribute(a,v);}
+function sv(id,v,c){const e=el(id);if(!e)return;e.textContent=v;if(c)e.style.color=c;}
+function at(id,a,v){const e=el(id);if(e)e.setAttribute(a,v);}
 function rot(x,y,cx,cy,a){const r=a*Math.PI/180,dx=x-cx,dy=y-cy;return{x:cx+dx*Math.cos(r)-dy*Math.sin(r),y:cy+dx*Math.sin(r)+dy*Math.cos(r)};}
-
-const BL=85,BR=475,BY=222,GY=267,STR=42;
+function fM(v){if(!isFinite(v))return'—';return Math.round(v/1000)+' млн';}
+function fL(v){return Math.abs(v)<90&&isFinite(v)?v.toFixed(2):'∞';}
+function fML(v){return Math.round(Math.abs(v)/1000)+' млн';}
 
 function calc(){
-  const p={
-    sc:gv('sc'),varP:gv('var'),fixM:gv('fix'),
-    de:gv('de'),r:gv('r'),roa:gv('roa'),tax:gv('tax'),divP:gv('div')
-  };
-  const rev=BASE*p.sc;
-  const fixC=p.fixM*1000;
-  const cm=rev*(1-p.varP/100);
+  const p={sc:gv('isc'),varP:gv('ivar'),fix:gv('ifix'),de:gv('ide'),r:gv('ir'),roa:gv('iroa'),tax:gv('itax'),div:gv('idiv')};
+  const m=MKT[curMkt];
+  const exDiv=Math.max(0,p.div-25);
+  const varAdj=Math.min(8,exDiv*.15*m.vs);
+  const scMul=Math.max(.55,1-exDiv*.008*m.rs);
+  const roaLoss=exDiv*.1*m.vs;
+  const loopOn=exDiv>0;
+  const varPe=Math.min(94,p.varP+varAdj);
+  const scE=p.sc*scMul;
+  const roaE=Math.max(0,p.roa+m.rb-roaLoss);
+  const rev=BASE*scE;
+  const fixC=p.fix*1000;
+  const varC=rev*varPe/100;
+  const cm=rev-varC;
   const ebit=cm-fixC;
   const interest=EQ*p.de*p.r/100;
   const ebt=ebit-interest;
-  const netInc=Math.max(0,ebt)*(1-p.tax/100);
-  const divAmt=netInc*p.divP/100;
-  const retained=netInc-divAmt;
-
-  const dol=ebit>500?cm/ebit:(ebit<=-500?-99:cm/Math.max(ebit,1));
-  const dfl=ebt>500?ebit/ebt:(ebt<=-500?-99:ebit/Math.max(ebt,1));
+  const netI=Math.max(0,ebt)*(1-p.tax/100);
+  const divA=netI*p.div/100;
+  const ret=netI-divA;
+  const dol=ebit>100?cm/ebit:(ebit<=-100?-99:cm/Math.max(ebit,1));
+  const dfl=ebt>100?ebit/ebt:(ebt<=-100?-99:ebit/Math.max(ebt,1));
   const dtl=(dol>0&&dfl>0)?dol*dfl:-99;
-
-  const diff=p.roa-p.r;
+  const diff=roaE-p.r;
   const efl=diff*p.de*(1-p.tax/100);
-  const roe=p.roa+efl;
-
-  const bepBase=fixC/(1-p.varP/100);
-  const bepFull=(fixC+interest)/(1-p.varP/100);
-  const mos=(rev-bepFull)/rev*100;
-  const shield=interest*(1-p.tax/100);
-
-  return{p,rev,fixC,cm,ebit,interest,ebt,netInc,divAmt,retained,
-         dol,dfl,dtl,diff,efl,roe,bepBase,bepFull,mos,shield};
+  const roe=roaE+efl;
+  const bep=(fixC+interest)/(1-varPe/100);
+  const mos=(rev-bep)/rev*100;
+  const shield=interest*(p.tax/100); // M&M(1963): Annual Shield = r×D×T
+  return{p,m,exDiv,varAdj,scMul,roaLoss,loopOn,varPe,scE,roaE,
+         rev,fixC,varC,cm,ebit,interest,ebt,netI,divA,ret,
+         dol,dfl,dtl,diff,efl,roe,bep,mos,shield};
 }
-
-function fmtN(v,dec=1){
-  if(!isFinite(v)||Math.abs(v)>900)return'∞';
-  return(v>=0?'+':'')+v.toFixed(dec);
-}
-function fmtM(v){return Math.round(v/1000)+' млн';}
 
 function updSVG(d){
-  const{p,diff,efl,bepFull,rev}=d;
-
-  // Colors
+  const{p,m,diff,efl,bep,rev,loopOn}=d;
   const ec=efl>4?'#3B6D11':efl>0?'#185FA5':efl>-4?'#BA7517':'#A32D2D';
   const fc_c=diff<-1?'#A32D2D':diff<1.5?'#BA7517':'#3B6D11';
+  const fcX=Math.max(BL-8,Math.min(BR+8,280+diff*11));
+  const tilt=Math.max(-22,Math.min(22,efl*2.4));
 
-  // Fulcrum x: diff in [-14..+14] → [BL-10..BR+10]
-  const fcX=Math.max(BL-10,Math.min(BR+10, 280+diff*11));
-
-  // Tilt: efl [-20..+20] → [-22..+22] deg
-  const tilt=Math.max(-22,Math.min(22,efl*2.3));
-
-  // Beam rotation
-  attr('bm-g','transform',`rotate(${tilt},${fcX},${BY})`);
-  attr('bm-r','fill',ec);
-
-  // Fulcrum
-  attr('fc-tri','points',`${fcX},${BY} ${fcX-16},${GY} ${fcX+16},${GY}`);
-  attr('fc-tri','fill',fc_c);
-  attr('fc-sh','cx',fcX);
-  attr('fc-lbl','x',fcX);
-  attr('fc-lbl','fill',fc_c);
+  at('bm-g','transform',`rotate(${tilt},${fcX},${BY})`);
+  at('bm-r','fill',ec);
+  at('fc-tri','points',`${fcX},${BY} ${fcX-16},${GY} ${fcX+16},${GY}`);
+  at('fc-tri','fill',fc_c);
+  at('fc-sh','cx',fcX);
+  at('fc-lbl','x',fcX);
+  at('fc-lbl','fill',fc_c);
   el('fc-lbl').textContent='Δ='+(diff>=0?'+':'')+diff.toFixed(1)+'%';
 
-  // D/E weight on right arm
-  const deWx=fcX+(BR-fcX)*0.55;
-  const deWh=Math.max(12,Math.min(28,10+p.de*8));
-  attr('de-w','x',deWx-22);attr('de-w','y',BY-6-deWh);
-  attr('de-w','height',deWh);attr('de-w','fill',ec);
-  attr('de-wt','x',deWx);attr('de-wt','y',BY-6-deWh/2+3);
+  const wx=fcX+(BR-fcX)*.55;
+  const wh=Math.max(12,Math.min(26,10+p.de*8));
+  at('de-w','x',wx-21);at('de-w','y',BY-6-wh);at('de-w','height',wh);at('de-w','fill',ec);
+  at('de-wt','x',wx);at('de-wt','y',BY-6-wh/2+3);
 
-  // Compute rotated endpoints
-  const lp=rot(BL,BY,fcX,BY,tilt);
-  const rp=rot(BR,BY,fcX,BY,tilt);
-  const pw=Math.max(48,Math.min(80,48+p.de*11));
-
-  // Left pan (убыток side)
-  attr('sl','x1',lp.x);attr('sl','y1',lp.y);
-  attr('sl','x2',lp.x);attr('sl','y2',lp.y+STR);
-  attr('pl','x',lp.x-pw/2);attr('pl','y',lp.y+STR);attr('pl','width',pw);
-  attr('pl','fill',efl<0?'#A32D2D':'#B4B2A9');
-  attr('plt1','x',lp.x);attr('plt1','y',lp.y+STR+13);
-  attr('plt2','x',lp.x);attr('plt2','y',lp.y+STR+23);
-  attr('plt1','fill',efl<0?'#791F1F':'#5F5E5A');
+  const lp=rot(BL,BY,fcX,BY,tilt),rp=rot(BR,BY,fcX,BY,tilt);
+  const pw=Math.max(44,Math.min(76,44+p.de*10));
+  at('sl','x1',lp.x);at('sl','y1',lp.y);at('sl','x2',lp.x);at('sl','y2',lp.y+STR);
+  at('pl','x',lp.x-pw/2);at('pl','y',lp.y+STR);at('pl','width',pw);at('pl','fill',efl<0?'#A32D2D':'#B4B2A9');
+  at('plt1','x',lp.x);at('plt1','y',lp.y+STR+13);at('plt1','fill',efl<0?'#791F1F':'#5F5E5A');
   el('plt1').textContent=efl<0?'УБЫТОК ↓':'нейтрал';
+  at('plt2','x',lp.x);at('plt2','y',lp.y+STR+22);
   el('plt2').textContent=diff<0?'r > ROA':'r ≤ ROA';
-
-  // Right pan (прибыль side)
-  attr('sr','x1',rp.x);attr('sr','y1',rp.y);
-  attr('sr','x2',rp.x);attr('sr','y2',rp.y+STR);
-  attr('pr','x',rp.x-pw/2);attr('pr','y',rp.y+STR);attr('pr','width',pw);
-  attr('pr','fill',efl>0?'#3B6D11':'#B4B2A9');
-  attr('prt1','x',rp.x);attr('prt1','y',rp.y+STR+13);
-  attr('prt2','x',rp.x);attr('prt2','y',rp.y+STR+23);
-  attr('prt1','fill',efl>0?'#27500A':'#5F5E5A');
-  el('prt1').textContent=efl>0?'ROE ↑ ПРИБЫЛЬ':'нейтрал';
+  at('sr','x1',rp.x);at('sr','y1',rp.y);at('sr','x2',rp.x);at('sr','y2',rp.y+STR);
+  at('pr','x',rp.x-pw/2);at('pr','y',rp.y+STR);at('pr','width',pw);at('pr','fill',efl>0?'#3B6D11':'#B4B2A9');
+  at('prt1','x',rp.x);at('prt1','y',rp.y+STR+13);at('prt1','fill',efl>0?'#27500A':'#5F5E5A');
+  el('prt1').textContent=efl>0?'ROE ↑':'нейтрал';
+  at('prt2','x',rp.x);at('prt2','y',rp.y+STR+22);
   el('prt2').textContent='EFL '+(efl>=0?'+':'')+efl.toFixed(2)+'%';
-
-  // EFL arrows and label
   el('ea').textContent=efl>1?'⇒':efl<-1?'⇐':'⇄';
-  attr('ea','fill',ec);
+  at('ea','fill',ec);
   el('ev').textContent='EFL = '+(efl>=0?'+':'')+efl.toFixed(2)+'%';
-  attr('ev','fill',ec);
-  el('ev2').textContent=efl>0.5?'весы наклонились → ПРИБЫЛЬ':efl<-0.5?'весы наклонились → УБЫТОК':'≈ у точки перегиба';
-  attr('ev2','fill',ec);
+  at('ev','fill',ec);
+  el('ev2').textContent=efl>.5?'весы → ПРИБЫЛЬ':efl<-.5?'весы → УБЫТОК':'у точки перегиба';
+  at('ev2','fill',ec);
+  el('s-dol').textContent=fL(d.dol);at('s-dol','fill',d.dol<2.5?'#0C447C':d.dol<4?'#633806':'#791F1F');
+  el('s-dfl').textContent=fL(d.dfl);at('s-dfl','fill','#633806');
+  el('s-dtl').textContent=d.dtl>0?fL(d.dtl):'∞';at('s-dtl','fill',d.dtl>0&&d.dtl<3?'#3A2680':d.dtl<6?'#633806':'#791F1F');
+  el('s-mkt').textContent=m.ic+' '+m.n;
+  el('loop-arr').setAttribute('opacity',loopOn?'1':'0');
+}
 
-  // DOL/DFL/DTL badges in SVG
-  const{dol,dfl,dtl}=d;
-  el('svg-dol').textContent=isFinite(dol)&&Math.abs(dol)<90?dol.toFixed(1):'∞';
-  el('svg-dfl').textContent=isFinite(dfl)&&Math.abs(dfl)<90?dfl.toFixed(1):'∞';
-  el('svg-dtl').textContent=isFinite(dtl)&&dtl>0&&dtl<90?dtl.toFixed(1):'∞';
-  attr('svg-dol','fill',dol<2.5?'#0C447C':dol<4?'#633806':'#791F1F');
-  attr('svg-dfl','fill',dfl<1.5?'#633806':dfl<2.5?'#633806':'#791F1F');
-  attr('svg-dtl','fill',dtl>0&&dtl<3?'#3A2680':dtl<6?'#633806':'#791F1F');
+function updPL(d){
+  const{rev,varC,cm,ebit,interest,netI,divA,ret,bep,fixC}=d;
+  function bw(v){return Math.max(1,Math.min(PL_MAX,isFinite(v)&&v>0?(v/rev)*PL_MAX:1));}
+  function fmt(v){if(!isFinite(v))return'—';const m=Math.round(v/1000);return m+' млн';}
 
-  // BEP indicator line in SVG
-  const bepRatio=bepFull/rev;
-  const bepX=280+bepRatio*280; // in profit zone
-  if(bepX>285&&bepX<555){
-    attr('bep-line','x1',bepX);attr('bep-line','x2',bepX);
-    attr('bep-lbl','x',bepX+4);
-    el('bep-line').setAttribute('opacity','.55');
-    el('bep-lbl').setAttribute('opacity','.8');
-  } else {
-    el('bep-line').setAttribute('opacity','0');
-    el('bep-lbl').setAttribute('opacity','0');
-  }
+  at('pl-rev', 'width', bw(rev));      sv('pl-lrev', fmt(rev),   '#27500A');
+  at('pl-var', 'width', bw(varC));     sv('pl-lvar', fmt(varC),  '#791F1F');
+  at('pl-cm',  'width', bw(cm));       sv('pl-lcm',  fmt(cm),    '#0C447C');
+  at('pl-fix', 'width', bw(fixC));     sv('pl-lfix', fmt(fixC),  '#633806');
+  at('pl-ebit','width', bw(Math.max(0,ebit))); sv('pl-lebit', fmt(ebit), ebit>=0?'#1D9E75':'#A32D2D');
+  at('pl-ebit','fill',  ebit>=0?'#1D9E75':'#A32D2D');
+  at('pl-int', 'width', bw(interest)); sv('pl-lint', fmt(interest),'#791F1F');
+  at('pl-net', 'width', bw(Math.max(0,netI))); sv('pl-lnet', fmt(netI), '#3A2680');
+  at('pl-div', 'width', bw(Math.max(0,divA))); sv('pl-ldiv', fmt(divA), '#3A2680');
+  at('pl-ret', 'width', bw(Math.max(0,ret)));  sv('pl-lret', fmt(ret),  '#3B6D11');
+
+  // BEP line in П&Л
+  const bepX=PL_BX+Math.min(PL_MAX,(bep/rev)*PL_MAX);
+  at('pl-bep-ln','x1',bepX);at('pl-bep-ln','x2',bepX);
+  at('pl-bep-t','x',bepX);
+
+  // Margin of safety shaded area on revenue bar
+  const endX=PL_BX+PL_MAX;
+  const mosW=Math.max(0,endX-bepX);
+  at('pl-mos','x',bepX);at('pl-mos','width',mosW);
+  at('pl-mos-t','x',bepX+mosW/2);
+  el('pl-mos-t').textContent=mosW>20?'МБ':'';
 }
 
 function U(){
   const d=calc();
-  const{p,rev,ebit,dol,dfl,dtl,diff,efl,roe,bepFull,mos,shield,divAmt,retained,netInc}=d;
-
-  // Slider badges
+  const{p,m,exDiv,varAdj,scMul,roaLoss,loopOn,varPe,scE,roaE,
+        dol,dfl,dtl,diff,efl,roe,bep,mos,shield,divA,ret,netI,ebit}=d;
   const ec=efl>4?'#3B6D11':efl>0?'#185FA5':efl>-4?'#BA7517':'#A32D2D';
   const dc=diff>4?'#3B6D11':diff>0?'#185FA5':diff>-3?'#BA7517':'#A32D2D';
   const dec=p.de<.5?'#3B6D11':p.de<.7?'#185FA5':p.de<1?'#BA7517':'#A32D2D';
+
   sv('vsc','×'+p.sc.toFixed(2),p.sc>1?'#3B6D11':'#185FA5');
   sv('vvar',p.varP+'%',p.varP>80?'#A32D2D':p.varP>70?'#BA7517':'#3B6D11');
-  sv('vfix',p.fixM+' млн',p.fixM>100?'#A32D2D':p.fixM>85?'#BA7517':'#3B6D11');
+  sv('vfix',p.fix+' млн',p.fix>100?'#A32D2D':p.fix>85?'#BA7517':'#3B6D11');
   sv('vde',p.de.toFixed(2),dec);
   sv('vr',p.r.toFixed(1)+'%',dc);
   sv('vroa',p.roa.toFixed(1)+'%',p.roa>p.r?'#3B6D11':'#A32D2D');
   sv('vtax',p.tax+'%',p.tax>22?'#A32D2D':'#185FA5');
-  sv('vdiv',p.divP+'%',p.divP>50?'#A32D2D':p.divP>30?'#BA7517':'#533AB7');
+  sv('vdiv',p.div+'%',p.div>50?'#A32D2D':p.div>30?'#BA7517':'#533AB7');
+  el('sc-adj').textContent=loopOn?`→ факт: ×${scE.toFixed(2)} (−${((1-scMul)*100).toFixed(1)}% петля)` :'';
+  el('var-adj').textContent=loopOn&&varAdj>0?`→ факт: ${varPe.toFixed(1)}% (+${varAdj.toFixed(1)} п.п.)` :'';
+  el('roa-adj').textContent=`→ рынок: ${m.rb>=0?'+':''}${m.rb}% · петля: −${roaLoss.toFixed(1)}% · итого: ${roaE.toFixed(1)}%`;
 
-  // EFL big
+  // Loop box
+  const lb=el('loop-box');
+  if(loopOn){
+    lb.style.background='#FAECE7';lb.style.borderColor='#993C1D';
+    sv('loop-ttl',`🔴 Петля активна! +${exDiv.toFixed(0)}% сверх нормы`,'#791F1F');
+    sv('lv',`+${varAdj.toFixed(1)} п.п. → ${varPe.toFixed(1)}%`,'#A32D2D');
+    sv('ls',`×${scE.toFixed(2)} (−${((1-scMul)*100).toFixed(1)}%)`,'#A32D2D');
+    sv('lr',`−${roaLoss.toFixed(1)}% → ROA=${roaE.toFixed(1)}%`,'#A32D2D');
+    el('lref').textContent='Fazzari et al. (1988) · Myers (1977) · Stein (1989) · Black & Lynch (1996)';
+    el('lref').style.color='#791F1F';
+  } else {
+    lb.style.background='#EAF3DE';lb.style.borderColor='#3B6D11';
+    sv('loop-ttl','🟢 Петля неактивна — дивиденды в норме','#27500A');
+    sv('lv','без изменений','#27500A');sv('ls','без изменений','#27500A');sv('lr','без изменений','#27500A');
+    el('lref').textContent='Порог активации: дивиденды > 25% чистой прибыли';
+    el('lref').style.color='#27500A';
+  }
+
   sv('efl-big',(efl>=0?'+':'')+efl.toFixed(2)+'%',ec);
-  el('efl-meta').textContent='Эффект финансового рычага · ROE = '+roe.toFixed(1)+'%';
-  el('efl-form').textContent='('+p.roa.toFixed(1)+'−'+p.r.toFixed(1)+'%)×'+p.de.toFixed(2)+'×'+(1-p.tax/100).toFixed(2)+' = '+(efl>=0?'+':'')+efl.toFixed(2)+'%';
+  el('efl-meta').textContent='EFL · ROEрасч='+roe.toFixed(1)+'% · ROAeff='+roaE.toFixed(1)+'%';
+  const pvShield=Math.round(EQ*p.de*p.tax/100/1000);
+  el('efl-form').textContent='EFL=('+roaE.toFixed(1)+'−'+p.r.toFixed(1)+'%)×'+p.de.toFixed(2)+'×'+(1-p.tax/100).toFixed(2)+' = '+(efl>=0?'+':'')+efl.toFixed(2)+'%   Щит(год)='+Math.round(shield/1000)+'млн   PV щита(M&M)='+pvShield+'млн';
 
-  // Metric cards
-  const dolS=Math.abs(dol)<90&&isFinite(dol)?dol.toFixed(2):'∞';
-  const dflS=Math.abs(dfl)<90&&isFinite(dfl)?dfl.toFixed(2):'∞';
-  const dtlS=dtl>0&&dtl<90&&isFinite(dtl)?dtl.toFixed(2):'∞';
-  sv('m-dol',dolS,dol<2.5?'#3B6D11':dol<4?'#BA7517':'#A32D2D');
-  sv('m-dfl',dflS,dfl<1.5?'#3B6D11':dfl<2.5?'#BA7517':'#A32D2D');
+  const dtlS=dtl>0?fL(dtl):'∞';
+  sv('m-dol',fL(dol),dol<2.5?'#3B6D11':dol<4?'#BA7517':'#A32D2D');
+  sv('m-dfl',fL(dfl),dfl<1.5?'#3B6D11':dfl<2.5?'#BA7517':'#A32D2D');
   sv('m-dtl',dtlS,dtl>0&&dtl<3?'#533AB7':dtl<6?'#BA7517':'#A32D2D');
   sv('m-d',(diff>=0?'+':'')+diff.toFixed(1)+'%',dc);
-  sv('m-ebit',fmtM(ebit),ebit>0?'#3B6D11':'#A32D2D');
-  sv('m-bep',fmtM(bepFull));
+  sv('m-ebit',fM(ebit),ebit>0?'#3B6D11':'#A32D2D');
+  sv('m-bep',fM(bep));
   sv('m-mos',Math.max(0,mos).toFixed(0)+'%',mos>30?'#3B6D11':mos>15?'#185FA5':'#A32D2D');
   sv('m-roe',roe.toFixed(1)+'%',ec);
-  sv('m-sh',fmtM(shield));
-  sv('m-div',fmtM(divAmt));
-  sv('m-ret',fmtM(retained),retained>0?'#3B6D11':'#A32D2D');
+  sv('m-sh',fM(shield)); // shield = r×D×T — annual tax saving
+  sv('m-div',fM(divA));
+  sv('m-ret',fM(ret),ret>0?'#3B6D11':'#A32D2D');
+
+  // Market panel
+  const deVs=p.de<=m.dopt?'✅ в оптимуме':p.de<=m.dmax?'⚠️ выше оптимума':'🔴 критически высок';
+  const vSens=m.vs<=.3?'Низкая':m.vs<=.6?'Умеренная':m.vs<=.9?'Высокая':'Очень высокая!';
+  const mp=el('mkt-panel');mp.style.background=m.bg;mp.style.borderColor=m.c;
+  el('mpt').textContent=m.ic+' '+m.n;el('mpt').style.color=m.c;
+  sv('mp-roa',(m.rb>=0?'+':'')+m.rb+'% к ROA',m.rb>=4?'#3B6D11':m.rb>=0?'#185FA5':'#A32D2D');
+  sv('mp-dopt','0.20 – '+m.dopt.toFixed(2));
+  sv('mp-dvs',deVs,p.de<=m.dopt?'#3B6D11':p.de<=m.dmax?'#BA7517':'#A32D2D');
+  sv('mp-vs',vSens,m.vs<=.3?'#3B6D11':m.vs<=.6?'#185FA5':m.vs<=.9?'#BA7517':'#A32D2D');
+  sv('mp-st',m.st,m.c);
+  el('mp-note').textContent=m.nt;
 
   // Risk banner
-  const dtlRisk=dtl>0&&dtl<3?{l:'Оптимум ✅',bg:'#EAF3DE',bc:'#3B6D11',d:'DOL и DFL сбалансированы. Совокупный рычаг в комфортной зоне. Фулькрум в зоне прибыли.'}
-    :dtl>0&&dtl<5?{l:'Умеренный',bg:'#E6F1FB',bc:'#185FA5',d:'DTL = '+dtlS+'. Совокупный риск управляем. Снижение D/E или рост ROA улучшат позицию.'}
-    :diff<0?{l:'Критический 🔴',bg:'#FCEBEB',bc:'#A32D2D',d:'Дифференциал отрицательный — фулькрум в зоне убытка. Рычаг инвертирован.'}
-    :diff<1.5?{l:'Высокий ⚠️',bg:'#FAECE7',bc:'#993C1D',d:'Фулькрум у точки перегиба. Буфер <1.5 п.п. — малейший рост ставки переворачивает весы.'}
-    :{l:'Повышенный',bg:'#FAEEDA',bc:'#BA7517',d:'DTL = '+dtlS+'. Высокий совокупный рычаг. При волатильности выручки риск нарастает.'};
-  const rb=el('rb');rb.style.background=dtlRisk.bg;rb.style.borderLeftColor=dtlRisk.bc;
-  sv('rb-lv','Совокупный риск (DTL = '+dtlS+'): '+dtlRisk.l,dtlRisk.bc);
-  el('rb-ds').textContent=dtlRisk.d;
+  const risk=diff<0?{l:'Критический 🔴',bg:'#FCEBEB',bc:'#A32D2D',d:'Фулькрум в зоне убытка. Долг разрушает ROE. П&Л: EBIT отрицательный.'}
+    :diff<1.5?{l:'Высокий ⚠️',bg:'#FAECE7',bc:'#993C1D',d:`Буфер <1.5 п.п. до перегиба. BEP = ${fM(bep)} почти равен выручке.`}
+    :dtl>6?{l:'Повышенный — DTL взрывается',bg:'#FAEEDA',bc:'#BA7517',d:`DTL=${dtlS}: на 10% падения выручки прибыль упадёт в ${dtlS}x.`}
+    :loopOn?{l:'Умеренный + петля активна',bg:'#FAEEDA',bc:'#BA7517',d:`Петля снижает ROA на ${roaLoss.toFixed(1)}% и поднимает перем. затраты. П&Л ухудшается автоматически.`}
+    :diff>=5&&p.de<=m.dopt?{l:'Оптимум ✅',bg:'#EAF3DE',bc:'#3B6D11',d:`Фулькрум в зоне прибыли. D/E в диапазоне ${m.n}. П&Л: EBIT = ${fM(ebit)}.`}
+    :{l:'Умеренный',bg:'#E6F1FB',bc:'#185FA5',d:`Рабочий уровень. BEP = ${fM(bep)}. Запас = ${Math.max(0,mos).toFixed(0)}%.`};
+  const rb=el('rb');rb.style.background=risk.bg;rb.style.borderLeftColor=risk.bc;
+  sv('rb-lv',`DTL=${dtlS}: ${risk.l}`,risk.bc);
+  el('rb-ds').textContent=risk.d;
 
   updSVG(d);
+  updPL(d);
 }
 
+function sM(k){
+  curMkt=k;
+  document.querySelectorAll('.mb').forEach(b=>b.classList.remove('on'));
+  el('mb-'+k).classList.add('on');
+  U();
+}
 function AS(k){
   const s=SC[k];
-  el('sc').value=s.sc;el('var').value=s.var;el('fix').value=s.fix;
-  el('de').value=s.de;el('r').value=s.r;el('roa').value=s.roa;
-  el('tax').value=s.tax;el('div').value=s.div;
+  el('isc').value=s.sc;el('ivar').value=s.varP;el('ifix').value=s.fix;
+  el('ide').value=s.de;el('ir').value=s.r;el('iroa').value=s.roa;
+  el('itax').value=s.tax;el('idiv').value=s.div;
   document.querySelectorAll('.sc-b').forEach(b=>b.classList.remove('on'));
   el('b-'+k).classList.add('on');
   U();
 }
-
 U();
 </script>
 </body>
