@@ -59,12 +59,17 @@ input[type=range]{width:100%;height:4px;border-radius:2px;cursor:pointer;display
 .hg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
 .hc{border-radius:7px;padding:8px 9px;border-left:3px solid}
 footer{margin-top:12px;font-size:9px;color:var(--tx3);text-align:center;line-height:1.7}
+
+abbr{cursor:help;text-decoration:underline dotted 1.5px;text-decoration-color:rgba(0,0,0,.3);text-underline-offset:2px}
+abbr:hover{text-decoration-color:var(--cb,#185FA5)}
+[data-tip]{position:relative;cursor:help}
+.tip-dot{display:inline-block;width:12px;height:12px;border-radius:50%;background:rgba(0,0,0,.08);color:var(--tx3,#8a8a82);font-size:8px;text-align:center;line-height:12px;margin-left:3px;vertical-align:middle;cursor:help}
 </style>
 </head>
 <body>
 <div class="page">
-<h1>⚖️ Симулятор DTL · Весы + П&Л в рублях · Петля · Тип рынка · ООО «Доминант»</h1>
-<div class="sub">Весы на рычаге Архимеда · Под весами — П&Л в ₽ · BEP-линия пронизывает обе части · DOL × DFL = DTL · Brander-Lewis (1986) · Fazzari-Hubbard-Petersen (1988)</div>
+<h1>⚖️ Симулятор <abbr title="СР — Совокупный рычаг · DTL (Degree of Total Leverage) = ОР × ФР">СР</abbr> · Весы + П&Л в рублях · Дивидендная петля · Тип рынка · ООО «Доминант»</h1>
+<div class="sub">Весы на рычаге Архимеда · Под весами — П&Л в ₽ · <abbr title="ТБ — Точка безубыточности · BEP (Break-Even Point)">ТБ</abbr>-линия сквозная · <abbr title="DOL — Degree of Operating Leverage">ОР</abbr> × <abbr title="DFL — Degree of Financial Leverage">ФР</abbr> = <abbr title="DTL — Degree of Total Leverage">СР</abbr> · Brander-Lewis (1986) · Fazzari et al. (1988) · Стоянова (1993) · Ковалёв (2007)</div>
 
 <div class="layout">
 <!-- ===== LEFT ===== -->
@@ -72,7 +77,7 @@ footer{margin-top:12px;font-size:9px;color:var(--tx3);text-align:center;line-hei
   <div class="rb" id="rb"><div style="font-size:16px;flex-shrink:0;margin-top:1px">⚠️</div>
     <div><div class="rb-lv" id="rb-lv">DTL…</div><div class="rb-ds" id="rb-ds"></div></div></div>
   <div class="card">
-    <div class="gt" style="background:var(--cb0);color:var(--cb8)">🏭 DOL — операционный рычаг</div>
+    <div class="gt" style="background:var(--cb0);color:var(--cb8)">🏭 Операционный рычаг (<abbr title="DOL — Degree of Operating Leverage · Brigham &amp; Gapenski">ОР</abbr>)</div>
     <div class="sl">
       <div class="sl-top"><span><span class="sl-nm">📦 Выручка</span><span class="sl-sub">масштаб</span></span><span class="sl-v" id="vsc">×1.00</span></div>
       <input type="range" min=".5" max="2.5" step=".05" value="1" id="isc" oninput="U()" style="accent-color:var(--cb)">
@@ -90,11 +95,11 @@ footer{margin-top:12px;font-size:9px;color:var(--tx3);text-align:center;line-hei
       <input type="range" min="20" max="160" step="1" value="78" id="ifix" oninput="U()" style="accent-color:var(--cb)">
       <div class="sl-h">Оранжевая полоса П&Л · ФОТ + аренда + бонусы</div>
     </div>
-    <div class="gt" style="background:var(--cg0);color:var(--cg8);margin-top:8px">💰 DFL — финансовый рычаг</div>
+    <div class="gt" style="background:var(--cg0);color:var(--cg8);margin-top:8px">💰 Финансовый рычаг (<abbr title="DFL — Degree of Financial Leverage · Brigham &amp; Gapenski">ФР</abbr>)</div>
     <div class="sl">
-      <div class="sl-top"><span><span class="sl-nm">⚖️ Плечо D/E</span></span><span class="sl-v" id="vde">0.92</span></div>
+      <div class="sl-top"><span><span class="sl-nm">⚖️ Плечо <abbr title="ПФР — Плечо финансового рычага · D/E (Debt-to-Equity) · Стоянова Е.С., Ковалёв В.В. · Отношение заёмного капитала к собственному">ПФР</abbr></span></span><span class="sl-v" id="vde">0.92</span></div>
       <input type="range" min=".1" max="3" step=".05" value=".92" id="ide" oninput="U()" style="accent-color:var(--cg)">
-      <div class="sl-h">Длина плеча · Оптимум зависит от рынка</div>
+      <div class="sl-h"><abbr title="ПФР — Плечо финансового рычага (D/E)">ПФР</abbr> · длина рычага · оптимум зависит от рынка</div>
     </div>
     <div class="sl">
       <div class="sl-top"><span><span class="sl-nm">💳 Ставка r</span><span class="sl-sub">%</span></span><span class="sl-v" id="vr">27%</span></div>
@@ -102,7 +107,7 @@ footer{margin-top:12px;font-size:9px;color:var(--tx3);text-align:center;line-hei
       <div class="sl-h">Тёмно-красная полоса (Проценты) в П&Л</div>
     </div>
     <div class="sl">
-      <div class="sl-top"><span><span class="sl-nm">📈 ROA</span></span><span class="sl-v" id="vroa">27.4%</span></div>
+      <div class="sl-top"><span><span class="sl-nm">📈 <abbr title="РЧА — Рентабельность чистых активов · ROA (Return on Assets) · Дамодаран: подлинная мера эффективности капитала до влияния рычага · Формула: EBIT ÷ Чистые активы">РЧА</abbr></span></span><span class="sl-v" id="vroa">27.4%</span></div>
       <input type="range" min="5" max="55" step=".5" value="27.4" id="iroa" oninput="U()" style="accent-color:var(--cg)">
       <div class="sl-h">Рынок и петля корректируют ROA</div>
       <div class="adj" id="roa-adj"></div>
@@ -116,7 +121,7 @@ footer{margin-top:12px;font-size:9px;color:var(--tx3);text-align:center;line-hei
     <div class="sl">
       <div class="sl-top"><span><span class="sl-nm">💎 Дивиденды</span><span class="sl-sub">% чистой прибыли</span></span><span class="sl-v" id="vdiv">15%</span></div>
       <input type="range" min="0" max="80" step="5" value="15" id="idiv" oninput="U()" style="accent-color:var(--cp)">
-      <div class="sl-h">До 25% — норма. Выше — петля активна</div>
+      <div class="sl-h">До 25% чистой прибыли — норма по <abbr title="Pecking Order Theory — Myers &amp; Majluf (1984): иерархия источников финансирования. Внутренние ресурсы приоритетны.">теории иерархии</abbr>. Выше — петля</div>
     </div>
     <div class="loop-box" id="loop-box">
       <div style="font-weight:700" id="loop-ttl">🟢 Петля неактивна</div>
@@ -147,154 +152,214 @@ footer{margin-top:12px;font-size:9px;color:var(--tx3);text-align:center;line-hei
 
 <!-- SVG: ВЕСЫ + П&Л В РУБЛЯХ -->
 <div class="card" style="padding:7px">
-<svg id="viz" viewBox="0 0 560 440" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;overflow:hidden">
+<svg id="viz" viewBox="0 0 560 358" width="100%" xmlns="http://www.w3.org/2000/svg" style="display:block;overflow:hidden">
 
   <!-- ══ ЗОНЫ ВЕСОВ ══ -->
-  <rect x="0" y="0" width="280" height="256" fill="#FCEBEB" opacity=".55"/>
-  <rect x="280" y="0" width="280" height="256" fill="#EAF3DE" opacity=".55"/>
+  <rect x="0" y="0" width="280" height="194" fill="#FCEBEB" opacity=".55"/>
+  <rect x="280" y="0" width="280" height="194" fill="#EAF3DE" opacity=".55"/>
   <text x="107" y="14" text-anchor="middle" font-size="9.5" font-weight="700" fill="#791F1F" font-family="Segoe UI,sans-serif">ЗОНА УБЫТКА</text>
   <text x="107" y="24" text-anchor="middle" font-size="7.5" fill="#791F1F" font-family="Segoe UI,sans-serif">r &gt; ROA · рычаг разрушает стоимость</text>
   <text x="453" y="14" text-anchor="middle" font-size="9.5" font-weight="700" fill="#27500A" font-family="Segoe UI,sans-serif">ЗОНА ПРИБЫЛИ</text>
   <text x="453" y="24" text-anchor="middle" font-size="7.5" fill="#27500A" font-family="Segoe UI,sans-serif">r &lt; ROA · рычаг создаёт ценность</text>
 
   <!-- Точка перегиба -->
-  <line x1="280" y1="0" x2="280" y2="256" stroke="#BA7517" stroke-width="2" stroke-dasharray="6,4" opacity=".85"/>
-  <rect x="212" y="36" width="136" height="26" rx="5" fill="#FAEEDA" opacity=".92"/>
-  <text x="280" y="49" text-anchor="middle" font-size="9" font-weight="700" fill="#633806" font-family="Segoe UI,sans-serif">ТОЧКА ПЕРЕГИБА</text>
-  <text x="280" y="59" text-anchor="middle" font-size="7.5" fill="#633806" font-family="Segoe UI,sans-serif">r = ROA · дифференциал = 0</text>
+  <line x1="280" y1="0" x2="280" y2="194" stroke="#BA7517" stroke-width="2" stroke-dasharray="6,4" opacity=".85"/>
+  <rect x="212" y="28" width="136" height="24" rx="5" fill="#FAEEDA" opacity=".92"/>
+  <text x="280" y="40" text-anchor="middle" font-size="9" font-weight="700" fill="#633806" font-family="Segoe UI,sans-serif">ТОЧКА ПЕРЕГИБА</text>
+  <text x="280" y="50" text-anchor="middle" font-size="7.5" fill="#633806" font-family="Segoe UI,sans-serif">r = ROA · дифференциал = 0</text>
 
   <!-- ══ ЗЕМЛЯ ══ -->
-  <rect x="0" y="256" width="560" height="7" fill="#D3D1C7"/>
-  <line x1="0" y1="256" x2="560" y2="256" stroke="#B4B2A9" stroke-width="1"/>
-  <rect x="62" y="252" width="436" height="5" rx="2.5" fill="#A8A6A0"/>
+  
+  <!-- ══ НАЗВАНИЯ ЗОН: Эффект дубины / Точка безразличия / Положительный рычаг ══ -->
+  <g>
+    <title>«Эффект дубины» (Club Effect, Boomerang Effect) ·
+Французская школа финансового менеджмента ·
+Стоянова Е.С. «Финансовый менеджмент» (1993) ·
+Ковалёв В.В. «Финансовый менеджмент» (2007) ·
+Brigham E.F.: «Negative Financial Leverage» ·
+При ROA &lt; r: рычаг инвертирован.
+D/E умножает убыток — чем выше плечо, тем сильнее удар.</title>
+    <rect x="14" y="55" width="186" height="36" rx="5" fill="#FCEBEB" opacity=".7"/>
+    <text x="107" y="68" text-anchor="middle" font-size="10.5" font-weight="700" fill="#791F1F" font-family="Segoe UI,sans-serif">⚡ Эффект дубины</text>
+    <text x="107" y="80" text-anchor="middle" font-size="7.5" fill="#A32D2D" font-family="Segoe UI,sans-serif">Стоянова (1993) · Ковалёв (2007)</text>
+    <text x="107" y="89" text-anchor="middle" font-size="7" fill="#A32D2D" font-family="Segoe UI,sans-serif" font-style="italic">«Negative Leverage» — Brigham</text>
+  </g>
+  <g>
+    <title>«Точка финансового безразличия» (Financial Indifference Point) ·
+Brigham E.F. &amp; Gapenski L.C. «Financial Management» ·
+EPS Indifference Analysis — EBIT-EPS метод ·
+При ROA = r: ЭФР = 0 при любом D/E.
+Компания получает одинаковый РСК вне зависимости от структуры капитала.
+Также: «Критическая точка рычага» — Ковалёв В.В.</title>
+    <rect x="207" y="55" width="146" height="36" rx="5" fill="#FAEEDA" opacity=".85"/>
+    <text x="280" y="68" text-anchor="middle" font-size="9.5" font-weight="700" fill="#633806" font-family="Segoe UI,sans-serif">⚖️ Точка безразличия</text>
+    <text x="280" y="79" text-anchor="middle" font-size="7.5" fill="#633806" font-family="Segoe UI,sans-serif">Brigham &amp; Gapenski · ЭФР = 0</text>
+    <text x="280" y="89" text-anchor="middle" font-size="7" fill="#633806" font-family="Segoe UI,sans-serif" font-style="italic">«Indifference Point» — EBIT-EPS</text>
+  </g>
+  <g>
+    <title>«Положительный эффект финансового рычага» · ЭФР &gt; 0 ·
+Стоянова Е.С. «Финансовый менеджмент» (1993) ·
+Ковалёв В.В. «Финансовый менеджмент» (2007) ·
+Brigham E.F.: «Positive Financial Leverage» ·
+Дамодаран А.: «Value-creating leverage zone» ·
+При ROA &gt; r: каждый рубль D/E прибавляет к РСК.
+Чем выше ПФР — тем сильнее усиление прибыли.</title>
+    <rect x="360" y="55" width="186" height="36" rx="5" fill="#EAF3DE" opacity=".7"/>
+    <text x="453" y="68" text-anchor="middle" font-size="10.5" font-weight="700" fill="#27500A" font-family="Segoe UI,sans-serif">✨ Положительный рычаг</text>
+    <text x="453" y="79" text-anchor="middle" font-size="7.5" fill="#3B6D11" font-family="Segoe UI,sans-serif">Стоянова (1993) · Ковалёв (2007)</text>
+    <text x="453" y="89" text-anchor="middle" font-size="7" fill="#3B6D11" font-family="Segoe UI,sans-serif" font-style="italic">«Positive Leverage» — Brigham</text>
+  </g>
+
+  <rect x="0" y="194" width="560" height="7" fill="#D3D1C7"/>
+  <line x1="0" y1="194" x2="560" y2="194" stroke="#B4B2A9" stroke-width="1"/>
+  <rect x="62" y="190" width="436" height="5" rx="2.5" fill="#A8A6A0"/>
 
   <!-- ══ ФУЛЬКРУМ ══ -->
-  <ellipse id="fc-sh" cx="280" cy="257" rx="19" ry="3.5" fill="rgba(0,0,0,.15)"/>
-  <polygon id="fc-tri" points="280,213 264,256 296,256" fill="#5F5E5A"/>
-  <text id="fc-lbl" x="280" y="269" text-anchor="middle" font-size="8.5" font-weight="700" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Δ=+0.4%</text>
+  <ellipse id="fc-sh" cx="280" cy="195" rx="19" ry="3.5" fill="rgba(0,0,0,.15)"/>
+  <polygon id="fc-tri" points="280,162 264,194 296,194" fill="#5F5E5A"/>
+  <text id="fc-lbl" x="280" y="208" text-anchor="middle" font-size="8.5" font-weight="700" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Δ=+0.4%</text>
 
   <!-- ══ БАЛКА ══ -->
   <g id="bm-g">
-    <rect id="bm-r" x="65" y="208" width="430" height="10" rx="3" fill="#185FA5"/>
-    <circle cx="280" cy="213" r="3" fill="#0C447C" opacity=".5"/>
-    <rect id="de-w" x="370" y="196" width="40" height="18" rx="3" fill="#185FA5" opacity=".72"/>
-    <text id="de-wt" x="390" y="208" text-anchor="middle" font-size="7.5" fill="white" font-weight="700" font-family="Segoe UI,sans-serif">D/E</text>
+    <rect id="bm-r" x="65" y="157" width="430" height="9" rx="3" fill="#185FA5"/>
+    <circle cx="280" cy="161" r="3" fill="#0C447C" opacity=".5"/>
+    <rect id="de-w" x="370" y="144" width="40" height="16" rx="3" fill="#185FA5" opacity=".72"/>
+    <text id="de-wt" x="390" y="155" text-anchor="middle" font-size="7.5" fill="white" font-weight="700" font-family="Segoe UI,sans-serif">D/E</text>
   </g>
 
   <!-- ══ ЛЕВАЯ ЧАША ══ -->
-  <line id="sl" x1="85" y1="208" x2="85" y2="254" stroke="#888780" stroke-width="1.5"/>
-  <rect id="pl" x="58" y="254" width="54" height="7" rx="2" fill="#A32D2D"/>
-  <text id="plt1" x="85" y="269" text-anchor="middle" font-size="8.5" font-weight="700" fill="#791F1F" font-family="Segoe UI,sans-serif">УБЫТОК</text>
-  <text id="plt2" x="85" y="279" text-anchor="middle" font-size="7" fill="#888780" font-family="Segoe UI,sans-serif">r &gt; ROA</text>
+  <line id="sl" x1="85" y1="157" x2="85" y2="192" stroke="#888780" stroke-width="1.5"/>
+  <rect id="pl" x="58" y="192" width="54" height="7" rx="2" fill="#A32D2D"/>
+  <text id="plt1" x="85" y="208" text-anchor="middle" font-size="8.5" font-weight="700" fill="#791F1F" font-family="Segoe UI,sans-serif">УБЫТОК</text>
+  <text id="plt2" x="85" y="218" text-anchor="middle" font-size="7" fill="#888780" font-family="Segoe UI,sans-serif">r &gt; ROA</text>
 
   <!-- ══ ПРАВАЯ ЧАША ══ -->
-  <line id="sr" x1="475" y1="208" x2="475" y2="254" stroke="#888780" stroke-width="1.5"/>
-  <rect id="pr" x="448" y="254" width="54" height="7" rx="2" fill="#3B6D11"/>
-  <text id="prt1" x="475" y="269" text-anchor="middle" font-size="8.5" font-weight="700" fill="#27500A" font-family="Segoe UI,sans-serif">ROE ↑</text>
-  <text id="prt2" x="475" y="279" text-anchor="middle" font-size="7" fill="#888780" font-family="Segoe UI,sans-serif">EFL +</text>
+  <line id="sr" x1="475" y1="157" x2="475" y2="192" stroke="#888780" stroke-width="1.5"/>
+  <rect id="pr" x="448" y="192" width="54" height="7" rx="2" fill="#3B6D11"/>
+  <text id="prt1" x="475" y="208" text-anchor="middle" font-size="8.5" font-weight="700" fill="#27500A" font-family="Segoe UI,sans-serif">ROE ↑</text>
+  <text id="prt2" x="475" y="218" text-anchor="middle" font-size="7" fill="#888780" font-family="Segoe UI,sans-serif">EFL +</text>
 
   <!-- ══ ЦЕНТР EFL ══ -->
-  <text id="ea" x="280" y="118" text-anchor="middle" font-size="22" fill="#185FA5" opacity=".7" font-family="Segoe UI,sans-serif">⇄</text>
-  <text id="ev" x="280" y="148" text-anchor="middle" font-size="14" font-weight="700" fill="#185FA5" font-family="Segoe UI,sans-serif">EFL = +0.4%</text>
-  <text id="ev2" x="280" y="163" text-anchor="middle" font-size="8" fill="#888780" font-family="Segoe UI,sans-serif">изменение ROE от рычага</text>
+  <text id="ea" x="280" y="90" text-anchor="middle" font-size="20" fill="#185FA5" opacity=".7" font-family="Segoe UI,sans-serif">⇄</text>
+  <text id="ev" x="280" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#185FA5" font-family="Segoe UI,sans-serif">EFL = +0.4%</text>
+  <text id="ev2" x="280" y="129" text-anchor="middle" font-size="8" fill="#888780" font-family="Segoe UI,sans-serif">изменение ROE от рычага</text>
 
   <!-- ══ БЕЙДЖИ DOL / DFL / DTL ══ -->
-  <rect x="8"   y="259" width="72" height="30" rx="4" fill="#E6F1FB" opacity=".9"/>
-  <text x="44"  y="270" text-anchor="middle" font-size="7.5" fill="#0C447C" font-family="Segoe UI,sans-serif">DOL</text>
-  <text id="s-dol" x="44" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#0C447C" font-family="Segoe UI,sans-serif">—</text>
-  <rect x="244" y="259" width="72" height="30" rx="4" fill="#FAEEDA" opacity=".9"/>
-  <text x="280" y="270" text-anchor="middle" font-size="7.5" fill="#633806" font-family="Segoe UI,sans-serif">DFL</text>
-  <text id="s-dfl" x="280" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#633806" font-family="Segoe UI,sans-serif">—</text>
-  <rect x="480" y="259" width="72" height="30" rx="4" fill="#EDE9FB" opacity=".9"/>
-  <text x="516" y="270" text-anchor="middle" font-size="7.5" fill="#3A2680" font-family="Segoe UI,sans-serif">DTL</text>
-  <text id="s-dtl" x="516" y="284" text-anchor="middle" font-size="12" font-weight="700" fill="#3A2680" font-family="Segoe UI,sans-serif">—</text>
-  <text id="s-mkt" x="556" y="256" text-anchor="end" font-size="8" fill="#888780" font-family="Segoe UI,sans-serif"></text>
+  <g style="cursor:help"><title>ОР — Операционный рычаг ·
+DOL (Degree of Operating Leverage) — Brigham &amp; Gapenski ·
+Формула: ОР = КМД ÷ EBIT ·
+Показывает: на 1% роста выручки EBIT изменится на ОР% ·
+Норма: ОР &lt; 2.5 (Дамодаран) · Источник: Brigham E.F., Gapenski L.C. «Financial Management»</title>
+  <rect x="8"   y="198" width="72" height="27" rx="4" fill="#E6F1FB" opacity=".9"/>
+  <text x="44"  y="208" text-anchor="middle" font-size="7.5" fill="#0C447C" font-family="Segoe UI,sans-serif">ОР</text>
+  <text id="s-dol" x="44" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="#0C447C" font-family="Segoe UI,sans-serif">—</text>
+  </g>
+  <g style="cursor:help"><title>ФР — Финансовый рычаг ·
+DFL (Degree of Financial Leverage) — Brigham &amp; Gapenski ·
+Формула: ФР = EBIT ÷ EBT = EBIT ÷ (EBIT − Проценты) ·
+Показывает: на 1% изменения EBIT РСК изменится на ФР% ·
+Источник: Brigham E.F., Gapenski L.C. «Financial Management»</title>
+  <rect x="244" y="198" width="72" height="27" rx="4" fill="#FAEEDA" opacity=".9"/>
+  <text x="280" y="208" text-anchor="middle" font-size="7.5" fill="#633806" font-family="Segoe UI,sans-serif">ФР</text>
+  <text id="s-dfl" x="280" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="#633806" font-family="Segoe UI,sans-serif">—</text>
+  </g>
+  <g style="cursor:help"><title>СР — Совокупный рычаг ·
+DTL (Degree of Total Leverage) — Brigham &amp; Gapenski ·
+Формула: СР = ОР × ФР ·
+Показывает: на 1% роста выручки РСК изменится на СР% ·
+Чем выше СР — тем выше совокупный риск бизнеса ·
+Источник: Brigham E.F., Gapenski L.C. «Financial Management»</title>
+  <rect x="480" y="198" width="72" height="27" rx="4" fill="#EDE9FB" opacity=".9"/>
+  <text x="516" y="208" text-anchor="middle" font-size="7.5" fill="#3A2680" font-family="Segoe UI,sans-serif">СР</text>
+  <text id="s-dtl" x="516" y="220" text-anchor="middle" font-size="11" font-weight="700" fill="#3A2680" font-family="Segoe UI,sans-serif">—</text>
+  </g>
+  <text id="s-mkt" x="556" y="194" text-anchor="end" font-size="8" fill="#888780" font-family="Segoe UI,sans-serif"></text>
 
   <!-- ════════════════════════════════════════════════
        П&Л В РУБЛЯХ — ПОД ВЕСАМИ
        ════════════════════════════════════════════════ -->
 
   <!-- Фон секции П&Л -->
-  <rect x="0" y="295" width="560" height="145" fill="#F8F7F1"/>
-  <line x1="0" y1="295" x2="560" y2="295" stroke="#C8C6BE" stroke-width="1"/>
+  <rect x="0" y="230" width="560" height="128" fill="#F8F7F1"/>
+  <line x1="0" y1="230" x2="560" y2="230" stroke="#C8C6BE" stroke-width="1"/>
 
   <!-- Заголовок -->
-  <text x="280" y="308" text-anchor="middle" font-size="9" font-weight="700" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Структура П&amp;Л в рублях · все полосы в масштабе выручки</text>
+  <text x="280" y="241" text-anchor="middle" font-size="9" font-weight="700" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Структура П&amp;Л в рублях · все полосы в масштабе выручки</text>
 
   <!-- BEP вертикальная линия через всю П&Л секцию -->
-  <line id="pl-bep-ln" x1="370" y1="296" x2="370" y2="435" stroke="#BA7517" stroke-width="1.5" stroke-dasharray="5,3" opacity=".85"/>
-  <text id="pl-bep-t" x="370" y="309" text-anchor="middle" font-size="7.5" fill="#BA7517" font-family="Segoe UI,sans-serif" font-weight="700">BEP</text>
+  <line id="pl-bep-ln" x1="370" y1="231" x2="370" y2="352" stroke="#BA7517" stroke-width="1.5" stroke-dasharray="5,3" opacity=".85"/>
+  <text id="pl-bep-t" x="370" y="242" text-anchor="middle" font-size="7.5" fill="#BA7517" font-family="Segoe UI,sans-serif" font-weight="700">ТБ</text>
 
   <!-- Запас прочности (зона между BEP и концом выручки) -->
-  <rect id="pl-mos" x="370" y="313" width="90" height="11" fill="#3B6D11" opacity=".15" rx="1"/>
-  <text id="pl-mos-t" x="415" y="322" text-anchor="middle" font-size="7" fill="#3B6D11" font-family="Segoe UI,sans-serif">МБ</text>
+  <rect id="pl-mos" x="370" y="246" width="90" height="9" fill="#3B6D11" opacity=".15" rx="1"/>
+  <text id="pl-mos-t" x="415" y="254" text-anchor="middle" font-size="7" fill="#3B6D11" font-family="Segoe UI,sans-serif">МБ</text>
 
   <!-- Петля-стрелка (видна при активной петле) -->
   <g id="loop-arr" opacity="0">
-    <path d="M 440 355 Q 510 340 500 325" stroke="#993C1D" stroke-width="1.5" fill="none" stroke-dasharray="4,2" marker-end="url(#arr)"/>
-    <text x="510" y="342" font-size="7.5" fill="#993C1D" font-family="Segoe UI,sans-serif" font-weight="700">петля↑</text>
+    <path d="M 440 295 Q 510 280 500 265" stroke="#993C1D" stroke-width="1.5" fill="none" stroke-dasharray="4,2" marker-end="url(#arr)"/>
+    <text x="510" y="278" font-size="7.5" fill="#993C1D" font-family="Segoe UI,sans-serif" font-weight="700">петля↑</text>
   </g>
 
   <!-- Строка 1: ВЫРУЧКА -->
-  <text x="116" y="322" text-anchor="end" font-size="8.5" fill="#27500A" font-weight="700" font-family="Segoe UI,sans-serif">Выручка</text>
-  <rect id="pl-rev" x="120" y="312" width="370" height="11" rx="2" fill="#3B6D11" opacity=".78"/>
-  <text id="pl-lrev" x="495" y="322" font-size="8.5" fill="#27500A" font-weight="700" font-family="Segoe UI,sans-serif">429 млн</text>
+  <text x="116" y="255" text-anchor="end" font-size="8.5" fill="#27500A" font-weight="700" font-family="Segoe UI,sans-serif">Выручка</text>
+  <rect id="pl-rev" x="120" y="246" width="370" height="9" rx="2" fill="#3B6D11" opacity=".78"/>
+  <text id="pl-lrev" x="495" y="255" font-size="8.5" fill="#27500A" font-weight="700" font-family="Segoe UI,sans-serif">429 млн</text>
 
   <!-- Строка 2: ПЕРЕМЕННЫЕ ЗАТРАТЫ -->
-  <text x="116" y="335" text-anchor="end" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">Перем. затр.</text>
-  <rect id="pl-var" x="120" y="325" width="270" height="11" rx="2" fill="#A32D2D" opacity=".72"/>
-  <text id="pl-lvar" x="495" y="335" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">313 млн</text>
+  <text x="116" y="266" text-anchor="end" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">Перем. затр.</text>
+  <rect id="pl-var" x="120" y="257" width="270" height="9" rx="2" fill="#A32D2D" opacity=".72"/>
+  <text id="pl-lvar" x="495" y="266" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">313 млн</text>
 
   <!-- Строка 3: КМД -->
-  <text x="116" y="348" text-anchor="end" font-size="8.5" fill="#0C447C" font-weight="700" font-family="Segoe UI,sans-serif">КМД</text>
-  <rect id="pl-cm" x="120" y="338" width="100" height="11" rx="2" fill="#185FA5" opacity=".75"/>
-  <text id="pl-lcm" x="495" y="348" font-size="8.5" fill="#0C447C" font-weight="700" font-family="Segoe UI,sans-serif">116 млн</text>
+  <text x="116" y="277" text-anchor="end" font-size="8.5" fill="#0C447C" font-weight="700" font-family="Segoe UI,sans-serif">КМД</text>
+  <rect id="pl-cm" x="120" y="268" width="100" height="9" rx="2" fill="#185FA5" opacity=".75"/>
+  <text id="pl-lcm" x="495" y="277" font-size="8.5" fill="#0C447C" font-weight="700" font-family="Segoe UI,sans-serif">116 млн</text>
 
   <!-- Строка 4: ПОСТОЯННЫЕ ЗАТРАТЫ -->
-  <text x="116" y="361" text-anchor="end" font-size="8.5" fill="#633806" font-weight="700" font-family="Segoe UI,sans-serif">Пост. затраты</text>
-  <rect id="pl-fix" x="120" y="351" width="67" height="11" rx="2" fill="#BA7517" opacity=".75"/>
-  <text id="pl-lfix" x="495" y="361" font-size="8.5" fill="#633806" font-weight="700" font-family="Segoe UI,sans-serif">78 млн</text>
+  <text x="116" y="288" text-anchor="end" font-size="8.5" fill="#633806" font-weight="700" font-family="Segoe UI,sans-serif">Пост. затраты</text>
+  <rect id="pl-fix" x="120" y="279" width="67" height="9" rx="2" fill="#BA7517" opacity=".75"/>
+  <text id="pl-lfix" x="495" y="288" font-size="8.5" fill="#633806" font-weight="700" font-family="Segoe UI,sans-serif">78 млн</text>
 
   <!-- Строка 5: EBIT -->
-  <text x="116" y="374" text-anchor="end" font-size="8.5" fill="#27500A" font-weight="700" font-family="Segoe UI,sans-serif">EBIT</text>
-  <rect id="pl-ebit" x="120" y="364" width="33" height="11" rx="2" fill="#1D9E75" opacity=".85"/>
-  <text id="pl-lebit" x="495" y="374" font-size="8.5" fill="#1D9E75" font-weight="700" font-family="Segoe UI,sans-serif">38 млн</text>
+  <text x="116" y="299" text-anchor="end" font-size="8.5" fill="#27500A" font-weight="700" font-family="Segoe UI,sans-serif">EBIT</text>
+  <rect id="pl-ebit" x="120" y="290" width="33" height="9" rx="2" fill="#1D9E75" opacity=".85"/>
+  <text id="pl-lebit" x="495" y="299" font-size="8.5" fill="#1D9E75" font-weight="700" font-family="Segoe UI,sans-serif">38 млн</text>
 
   <!-- Строка 6: ПРОЦЕНТЫ -->
-  <text x="116" y="387" text-anchor="end" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">Проценты (r)</text>
-  <rect id="pl-int" x="120" y="377" width="29" height="11" rx="2" fill="#791F1F" opacity=".72"/>
-  <text id="pl-lint" x="495" y="387" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">34 млн</text>
+  <text x="116" y="310" text-anchor="end" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">Проценты (r)</text>
+  <rect id="pl-int" x="120" y="301" width="29" height="9" rx="2" fill="#791F1F" opacity=".72"/>
+  <text id="pl-lint" x="495" y="310" font-size="8.5" fill="#791F1F" font-weight="700" font-family="Segoe UI,sans-serif">34 млн</text>
 
   <!-- Строка 7: ЧИСТАЯ ПРИБЫЛЬ -->
-  <text x="116" y="400" text-anchor="end" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">Чист. прибыль</text>
-  <rect id="pl-net" x="120" y="390" width="3" height="11" rx="2" fill="#533AB7" opacity=".85"/>
-  <text id="pl-lnet" x="495" y="400" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">3 млн</text>
+  <text x="116" y="321" text-anchor="end" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">Чист. прибыль</text>
+  <rect id="pl-net" x="120" y="312" width="3" height="9" rx="2" fill="#533AB7" opacity=".85"/>
+  <text id="pl-lnet" x="495" y="321" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">3 млн</text>
 
   <!-- Строка 8: ДИВИДЕНДЫ -->
-  <text x="116" y="413" text-anchor="end" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">Дивиденды</text>
-  <rect id="pl-div" x="120" y="403" width="2" height="11" rx="2" fill="#533AB7" opacity=".50"/>
-  <text id="pl-ldiv" x="495" y="413" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">0.5 млн</text>
+  <text x="116" y="332" text-anchor="end" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">Дивиденды</text>
+  <rect id="pl-div" x="120" y="323" width="2" height="9" rx="2" fill="#533AB7" opacity=".50"/>
+  <text id="pl-ldiv" x="495" y="332" font-size="8.5" fill="#3A2680" font-weight="700" font-family="Segoe UI,sans-serif">0.5 млн</text>
 
   <!-- Строка 9: НЕРАСПРЕДЕЛЁННАЯ ПРИБЫЛЬ -->
-  <text x="116" y="426" text-anchor="end" font-size="8.5" fill="#3B6D11" font-weight="700" font-family="Segoe UI,sans-serif">Удержано в СК</text>
-  <rect id="pl-ret" x="120" y="416" width="2" height="11" rx="2" fill="#3B6D11" opacity=".85"/>
-  <text id="pl-lret" x="495" y="426" font-size="8.5" fill="#3B6D11" font-weight="700" font-family="Segoe UI,sans-serif">2.5 млн</text>
+  <text x="116" y="343" text-anchor="end" font-size="8.5" fill="#3B6D11" font-weight="700" font-family="Segoe UI,sans-serif">Удержано в СК</text>
+  <rect id="pl-ret" x="120" y="334" width="2" height="9" rx="2" fill="#3B6D11" opacity=".85"/>
+  <text id="pl-lret" x="495" y="343" font-size="8.5" fill="#3B6D11" font-weight="700" font-family="Segoe UI,sans-serif">2.5 млн</text>
 
   <!-- Легенда П&Л -->
-  <rect x="120" y="430" width="10" height="6" rx="1" fill="#3B6D11" opacity=".78"/>
-  <text x="133" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Выручка</text>
-  <rect x="183" y="430" width="10" height="6" rx="1" fill="#A32D2D" opacity=".72"/>
-  <text x="196" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Перем.</text>
-  <rect x="236" y="430" width="10" height="6" rx="1" fill="#185FA5" opacity=".75"/>
-  <text x="249" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">КМД</text>
-  <rect x="281" y="430" width="10" height="6" rx="1" fill="#BA7517" opacity=".75"/>
-  <text x="294" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Пост.</text>
-  <rect x="328" y="430" width="10" height="6" rx="1" fill="#1D9E75" opacity=".85"/>
-  <text x="341" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">EBIT</text>
-  <rect x="372" y="430" width="10" height="6" rx="1" fill="#791F1F" opacity=".72"/>
-  <text x="385" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Проценты</text>
-  <rect x="440" y="430" width="10" height="6" rx="1" fill="#533AB7" opacity=".85"/>
-  <text x="453" y="436" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Прибыль/Дивид.</text>
+  <rect x="120" y="349" width="10" height="6" rx="1" fill="#3B6D11" opacity=".78"/>
+  <text x="133" y="355" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Выручка</text>
+  <rect x="183" y="349" width="10" height="6" rx="1" fill="#A32D2D" opacity=".72"/>
+  <text x="196" y="355" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Перем.</text>
+  <rect x="236" y="349" width="10" height="6" rx="1" fill="#185FA5" opacity=".75"/>
+  <text x="249" y="355" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">КМД</text>
+  <rect x="281" y="349" width="10" height="6" rx="1" fill="#BA7517" opacity=".75"/>
+  <text x="294" y="355" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Пост.</text>
+  <rect x="328" y="349" width="10" height="6" rx="1" fill="#1D9E75" opacity=".85"/>
+  <text x="341" y="355" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">EBIT</text>
+  <rect x="372" y="349" width="10" height="6" rx="1" fill="#791F1F" opacity=".72"/>
+  <text x="385" y="355" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Проценты</text>
+  <rect x="440" y="349" width="10" height="6" rx="1" fill="#533AB7" opacity=".85"/>
+  <text x="453" y="355" font-size="7.5" fill="#5F5E5A" font-family="Segoe UI,sans-serif">Прибыль/Дивид.</text>
 
 </svg>
 </div>
@@ -304,7 +369,7 @@ footer{margin-top:12px;font-size:9px;color:var(--tx3);text-align:center;line-hei
   <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
     <div id="efl-big" style="font-size:38px;font-weight:700;letter-spacing:-2px;transition:color .3s">+0.4%</div>
     <div>
-      <div style="font-size:11px;color:var(--tx2)" id="efl-meta">Эффект финансового рычага</div>
+      <div style="font-size:11px;color:var(--tx2)" id="efl-meta"><abbr title="ЭФР — Эффект финансового рычага · EFL (Effect of Financial Leverage) · Французская школа финансового менеджмента · Стоянова Е.С. (1993), Ковалёв В.В. (2007) · Формула: (РЧА − r) × ПФР × (1−T)">ЭФР</abbr> — эффект финансового рычага</div>
       <div style="font-family:monospace;font-size:9px;color:var(--tx3);margin-top:2px" id="efl-form"></div>
     </div>
   </div>
@@ -312,23 +377,23 @@ footer{margin-top:12px;font-size:9px;color:var(--tx3);text-align:center;line-hei
 
 <!-- 3 РЫЧАГА -->
 <div class="mg3">
-  <div class="mc" style="border-left-color:var(--cb)"><div class="mc-l">DOL — операционный рычаг</div><div class="mc-v" id="m-dol">—</div><div class="mc-s">КМД÷EBIT · 1% выручки → ?% EBIT</div></div>
-  <div class="mc" style="border-left-color:var(--ca)"><div class="mc-l">DFL — финансовый рычаг</div><div class="mc-v" id="m-dfl">—</div><div class="mc-s">EBIT÷EBT · 1% EBIT → ?% прибыли</div></div>
-  <div class="mc" style="border-left-color:var(--cp)"><div class="mc-l">DTL — совокупный рычаг</div><div class="mc-v" id="m-dtl">—</div><div class="mc-s">DOL × DFL · полный риск бизнеса</div></div>
+  <div class="mc" style="border-left-color:var(--cb)"><div class="mc-l"><abbr title="DOL — Degree of Operating Leverage · Brigham &amp; Gapenski «Financial Management»">ОР</abbr> — операционный рычаг</div><div class="mc-v" id="m-dol">—</div><div class="mc-s">КМД÷<abbr title="EBIT — Earnings Before Interest and Taxes · Операционная прибыль до вычета процентов и налогов">EBIT</abbr> · 1% выручки → ?% EBIT</div></div>
+  <div class="mc" style="border-left-color:var(--ca)"><div class="mc-l"><abbr title="DFL — Degree of Financial Leverage · Brigham &amp; Gapenski «Financial Management»">ФР</abbr> — финансовый рычаг</div><div class="mc-v" id="m-dfl">—</div><div class="mc-s"><abbr title="EBIT — Earnings Before Interest and Taxes">EBIT</abbr>÷<abbr title="EBT — Earnings Before Tax · Прибыль до налогообложения">EBT</abbr> · 1% EBIT → ?% прибыли</div></div>
+  <div class="mc" style="border-left-color:var(--cp)"><div class="mc-l"><abbr title="DTL — Degree of Total Leverage · Brigham &amp; Gapenski «Financial Management»">СР</abbr> — совокупный рычаг</div><div class="mc-v" id="m-dtl">—</div><div class="mc-s"><abbr title="DOL — Degree of Operating Leverage">ОР</abbr> × <abbr title="DFL — Degree of Financial Leverage">ФР</abbr> · полный риск</div></div>
 </div>
 
 <!-- МЕТРИКИ -->
 <div class="mg4">
-  <div class="mc" style="border-left-color:var(--cg)"><div class="mc-l">Дифференциал Δ</div><div class="mc-v" id="m-d">—</div><div class="mc-s">ROA − r · знак рычага</div></div>
-  <div class="mc" style="border-left-color:var(--cb)"><div class="mc-l">EBIT</div><div class="mc-v" id="m-ebit">—</div><div class="mc-s">млн ₽ · опер. прибыль</div></div>
-  <div class="mc" style="border-left-color:var(--ca)"><div class="mc-l">BEP</div><div class="mc-v" id="m-bep">—</div><div class="mc-s">млн ₽ · безубыточность</div></div>
-  <div class="mc" style="border-left-color:var(--cg)"><div class="mc-l">Запас прочности</div><div class="mc-v" id="m-mos">—</div><div class="mc-s">над BEP · цель &gt;30%</div></div>
+  <div class="mc" style="border-left-color:var(--cg)"><div class="mc-l"><abbr title="ДФР — Дифференциал финансового рычага · Формула: РЧА − r · При ДФР &gt; 0 → рычаг положительный · При ДФР = 0 → точка безразличия (Brigham) · При ДФР &lt; 0 → эффект дубины (Стоянова) · Источник: Стоянова Е.С., Ковалёв В.В., Дамодаран А.">ДФР</abbr> — дифференциал</div><div class="mc-v" id="m-d">—</div><div class="mc-s"><abbr title="РЧА — Рентабельность чистых активов · ROA">РЧА</abbr> − r · знак рычага</div></div>
+  <div class="mc" style="border-left-color:var(--cb)"><div class="mc-l"><abbr title="EBIT — Earnings Before Interest and Taxes · Операционная прибыль до вычета процентов и налогов · Стоянова: «Нетто-результат эксплуатации инвестиций»">EBIT</abbr> — опер. прибыль</div><div class="mc-v" id="m-ebit">—</div><div class="mc-s">млн ₽ · до процентов и налогов</div></div>
+  <div class="mc" style="border-left-color:var(--ca)"><div class="mc-l"><abbr title="ТБ — Точка безубыточности · BEP (Break-Even Point) · Формула: FC ÷ КМД% · При выручке ниже ТБ компания в убытке · Источник: Brigham, Gapenski «Financial Management»">ТБ</abbr> — безубыточность</div><div class="mc-v" id="m-bep">—</div><div class="mc-s">млн ₽ · BEP = FC ÷ КМД%</div></div>
+  <div class="mc" style="border-left-color:var(--cg)"><div class="mc-l"><abbr title="ЗФП — Запас финансовой прочности · Margin of Safety · Формула: (Выручка − ТБ) ÷ Выручка × 100% · Норма: ЗФП &gt; 30% (Дамодаран) · Показывает: на сколько может упасть выручка до убытка">ЗФП</abbr> — запас прочности</div><div class="mc-v" id="m-mos">—</div><div class="mc-s">над ТБ · цель &gt;30%</div></div>
 </div>
 <div class="mg4">
-  <div class="mc" style="border-left-color:var(--cg)"><div class="mc-l">ROE расч.</div><div class="mc-v" id="m-roe">—</div><div class="mc-s">ROA + EFL</div></div>
-  <div class="mc" style="border-left-color:var(--cr)"><div class="mc-l">Нал. щит (год.)</div><div class="mc-v" id="m-sh">—</div><div class="mc-s">r×D×T · M&amp;M 1963</div></div>
-  <div class="mc" style="border-left-color:var(--cp)"><div class="mc-l">Дивиденды</div><div class="mc-v" id="m-div">—</div><div class="mc-s">млн ₽</div></div>
-  <div class="mc" style="border-left-color:var(--cp)"><div class="mc-l">Удержано в СК</div><div class="mc-v" id="m-ret">—</div><div class="mc-s">млн ₽</div></div>
+  <div class="mc" style="border-left-color:var(--cg)"><div class="mc-l"><abbr title="РСК — Рентабельность собственного капитала · ROE (Return on Equity) · Формула: Чистая прибыль ÷ СК · Связь: РСК = РЧА + ЭФР · Источник: Стоянова Е.С., Ковалёв В.В.">РСК</abbr> — рент. СК</div><div class="mc-v" id="m-roe">—</div><div class="mc-s"><abbr title="ROA — Return on Assets · РЧА">РЧА</abbr> + <abbr title="ЭФР — Эффект финансового рычага · EFL · Стоянова Е.С., Ковалёв В.В.">ЭФР</abbr></div></div>
+  <div class="mc" style="border-left-color:var(--cr)"><div class="mc-l"><abbr title="НЩ — Налоговый щит · Tax Shield · Формула: r × D × T · Modigliani &amp; Miller (1963): PV щита = T × D для бессрочного долга · Graham (2000): средний щит = 9.7% рыночной стоимости">НЩ</abbr> — налог. щит (год.)</div><div class="mc-v" id="m-sh">—</div><div class="mc-s">r×D×T · M&amp;M 1963</div></div>
+  <div class="mc" style="border-left-color:var(--cp)"><div class="mc-l"><abbr title="Дивиденды · Уменьшают НРП → увеличивают D/E → активируют петлю при превышении 25% · Pecking Order Theory (Myers &amp; Majluf, 1984): высокие дивиденды → внешнее заимствование → рост ФР">Дивиденды</abbr></div><div class="mc-v" id="m-div">—</div><div class="mc-s">млн ₽</div></div>
+  <div class="mc" style="border-left-color:var(--cp)"><div class="mc-l"><abbr title="НРП — Нераспределённая прибыль · Retained Earnings · Увеличивает собственный капитал → снижает D/E → укрепляет рычаг · Pecking Order Theory (Myers, 1984): внутреннее финансирование — приоритет №1">НРП</abbr> — удержано в СК</div><div class="mc-v" id="m-ret">—</div><div class="mc-s">млн ₽ · укрепляет СК</div></div>
 </div>
 
 <!-- РЫНОК ПАНЕЛЬ -->
@@ -392,7 +457,7 @@ const SC={
   fact:{sc:1.0,varP:73,fix:78,de:.92,r:27,roa:27.4,tax:25,div:15},
   aggr:{sc:1.8,varP:68,fix:90,de:1.3,r:27,roa:35,tax:25,div:30},
 };
-const BL=85,BR=475,BY=213,GY=256,STR=41;
+const BL=85,BR=475,BY=162,GY=194,STR=31;
 const PL_BX=120,PL_MAX=370; // П&Л bar area
 
 function gv(id){return parseFloat(document.getElementById(id).value);}
@@ -505,7 +570,7 @@ function updPL(d){
 
   // BEP line in П&Л
   const bepX=PL_BX+Math.min(PL_MAX,(bep/rev)*PL_MAX);
-  at('pl-bep-ln','x1',bepX);at('pl-bep-ln','x2',bepX);
+  at('pl-bep-ln','x1',bepX);at('pl-bep-ln','x2',bepX); // compact
   at('pl-bep-t','x',bepX);
 
   // Margin of safety shaded area on revenue bar
