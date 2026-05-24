@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DTL · Матрица · Итераторы · Потолок · Ставропольский кластер</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f1117;color:#e4e6ed;font-size:13px;padding:10px 14px}
+h1{font-size:13px;font-weight:600;color:#a0c4ff;margin-bottom:8px}
+.st{font-size:8.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#4a5470;margin-bottom:5px}
+.sec{background:#1a1d27;border-radius:10px;padding:9px 11px;border:1px solid #2a2d3a}
+
+/* HOTEL SELECTOR */
+.hs{background:#11141f;border-radius:10px;padding:8px 10px;margin-bottom:8px;border:1px solid #232638}
+.hs-row{display:flex;gap:5px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}
+.hs-row::-webkit-scrollbar{display:none}
+.hc{flex-shrink:0;padding:5px 9px;border-radius:8px;border:1px solid #2a2d3a;background:#1a1d27;cursor:pointer;transition:all .15s;text-align:left;min-width:110px;max-width:140px}
+.hc:hover{border-color:#4e9af1;background:#1f2335}
+.hc.active{border-color:var(--hc-bc,#4e9af1);background:color-mix(in srgb,var(--hc-bc,#4e9af1) 12%,#1a1d27)}
+.hc-name{font-size:8px;font-weight:600;color:#c8d8ff;line-height:1.3;display:block;margin-bottom:2px}
+.hc-badge{font-size:7px;padding:1px 5px;border-radius:99px;font-weight:700;display:inline-block;margin-bottom:2px}
+.hc-note{font-size:7px;color:#5a6080;line-height:1.3}
+.h-none{font-size:8px;color:#4a5470;padding:3px 0}
+
+/* SLIDERS */
+.cg{display:grid;grid-template-columns:repeat(8,1fr);gap:4px 10px;padding:7px 11px;background:#1a1d27;border-radius:10px;margin-bottom:8px;border:1px solid #2a2d3a}
+.ci label{font-size:8.5px;color:#7b8099;display:block;margin-bottom:1px}
+.ci input{width:100%;margin:1px 0;accent-color:#4e9af1}
+.cv{font-size:11px;font-weight:600;color:#c8d8ff}
+.main-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bot-g{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
+
+/* P&L */
+.pr{display:flex;align-items:center;margin-bottom:1.5px}
+.pl{width:80px;font-size:7.5px;color:#5a6080;text-align:right;padding-right:4px;flex-shrink:0}
+.pb{height:11px;border-radius:2px;min-width:2px;padding:0 3px;font-size:7px;font-weight:600;display:flex;align-items:center;transition:width .2s;overflow:hidden;white-space:nowrap;color:#fff}
+.ps{font-size:7.5px;color:#6a7090;margin-left:3px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:5px}
+.mca{background:#13151e;border-radius:5px;padding:3px 5px;border:1px solid #1e2230}
+.mca .l{font-size:7px;color:#5a6080}.mca .v{font-size:11px;font-weight:600}
+
+/* LEVERS */
+.ls{margin-top:6px}
+.lr{display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.ln{font-size:8px;color:#5a6080;width:36px;flex-shrink:0}
+.lt{flex:1;height:4px;background:#13151e;border-radius:99px;overflow:hidden;border:1px solid #1e2230}
+.lf{height:100%;border-radius:99px;transition:width .2s,background .2s}
+.lv{font-size:8.5px;font-weight:600;width:36px;text-align:right;flex-shrink:0}
+.eb{padding:5px 7px;border-radius:7px;margin-top:5px;font-size:8px;line-height:1.6;border:1px solid transparent}
+.en{font-size:13px;font-weight:700;display:block;margin-bottom:1px}
+
+/* MATRIX */
+.mo{display:grid;grid-template-columns:10px 44px 1fr;gap:0;align-items:stretch}
+.my{writing-mode:vertical-rl;transform:rotate(180deg);font-size:7px;color:#4a5470;text-align:center}
+.myl{display:flex;flex-direction:column;gap:2px}
+.myli{flex:1;min-height:50px;font-size:6.5px;color:#4a5470;text-align:right;padding-right:3px;display:flex;align-items:center;justify-content:flex-end;line-height:1.2}
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;position:relative}
+.mc2{border-radius:3px;padding:3px;min-height:50px;position:relative;cursor:default;overflow:hidden;transition:outline .15s,box-shadow .15s}
+.mc2 .cn{font-size:7.5px;font-weight:600;line-height:1.3}
+.mc2 .cr{font-size:6px;opacity:.55;margin-top:1px}
+.mc2 .ce{font-size:6.5px;font-weight:600;position:absolute;bottom:2px;left:3px}
+.mc2.cur{outline:2.5px solid #4e9af1;z-index:4;box-shadow:0 0 0 3px rgba(78,154,241,.2)}
+.mc2.iter{outline:2px dashed #f59e0b;z-index:3;box-shadow:0 0 0 2px rgba(245,158,11,.15)}
+.mc2.fisc{outline:2px dashed #22d3ee;z-index:2}
+.mc2.ceil-h{outline:2px dotted #a78bfa;z-index:1}
+@keyframes pulse-danger{0%,100%{box-shadow:0 0 0 0 rgba(248,113,113,0)}50%{box-shadow:0 0 0 8px rgba(248,113,113,.4)}}
+.mc2.crossed{animation:pulse-danger 1.5s ease-in-out infinite;outline:3px solid #ef4444!important;z-index:6}
+.mc2 .cross-badge{position:absolute;top:2px;right:2px;font-size:8px}
+.md{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.mxl{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:2px}
+.mxli{font-size:6.5px;color:#4a5470;text-align:center;line-height:1.3}
+.mxa{font-size:6.5px;color:#4a5470;text-align:center;margin-top:2px}
+.mat-leg{display:flex;gap:8px;flex-wrap:wrap;margin-top:3px}
+.mat-leg-i{font-size:7px;color:#4a5070;display:flex;align-items:center;gap:3px}
+.leg-sq{width:7px;height:7px;border-radius:1px;flex-shrink:0}
+.pi{margin-top:4px;padding:5px 7px;background:#13151e;border-radius:7px;border:1px solid #1e2230}
+.pn{font-size:9.5px;font-weight:600}.pd{font-size:7.5px;color:#6a7090;margin-top:2px;line-height:1.5}
+.pc{font-size:7px;color:#4ec9b0;margin-top:3px;line-height:1.6;font-family:monospace;border-top:1px solid #1e2230;padding-top:3px}
+
+/* CROSSED BANNER */
+.cross-banner{display:none;margin-top:5px;padding:5px 8px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.4);border-radius:7px;font-size:8px;color:#fca5a5;line-height:1.6}
+.cross-banner.show{display:block}
+.cross-banner .cb-title{font-size:10px;font-weight:700;color:#f87171;display:block;margin-bottom:2px}
+
+/* FISCAL */
+.fbs{display:flex;flex-direction:column;gap:2px;margin-top:5px}
+.fb{font-size:7.5px;padding:3px 6px;border-radius:6px;border:.5px solid #2a2d3a;background:transparent;cursor:pointer;color:#5a6080;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:4px;line-height:1.4;transition:all .15s}
+.fb:hover{background:#22253a;color:#c8d8ff}
+.fb.op{background:rgba(34,197,94,.11);color:#4ade80;border-color:rgba(74,222,128,.3)}
+.fb.on{background:rgba(239,68,68,.11);color:#f87171;border-color:rgba(248,113,113,.3)}
+.fm{font-size:7px;font-weight:600;flex-shrink:0;white-space:nowrap}
+.fr2{font-size:7px;padding:2px 7px;border-radius:99px;border:.5px solid #2a2d3a;background:transparent;cursor:pointer;color:#4a5080;margin-top:3px;display:block}
+
+/* ITERATORS */
+.ir{padding:3px 0;border-bottom:1px solid #1d2130}
+.ir:last-child{border-bottom:none}
+.ir-top{display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.ir-name{font-size:8px;color:#b8c8e8;flex:1;line-height:1.3}
+.ibg{font-size:6px;padding:1px 4px;border-radius:99px;font-weight:700;flex-shrink:0;letter-spacing:.02em}
+.ibg.int{background:rgba(78,154,241,.2);color:#7eb8f7}
+.ibg.ext{background:rgba(34,197,94,.2);color:#4ade80}
+.ibg.str{background:rgba(251,191,36,.2);color:#fbbf24}
+.ir-ctrl{display:flex;align-items:center;gap:3px}
+.istep{background:#13151e;border:1px solid #22253a;color:#c8d8ff;width:18px;height:18px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:background .12s;flex-shrink:0;line-height:1}
+.istep:hover{background:#2a2d3a}
+.ibar-wrap{flex:1;position:relative;height:8px;display:flex;align-items:center}
+.ibar-bg{position:absolute;inset:0;background:#1d2130;border-radius:99px}
+.ibar-center{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#2a2d3a}
+.ibar-fill{position:absolute;height:100%;border-radius:99px;transition:all .18s;top:0}
+.icount{font-size:8px;font-weight:700;width:20px;text-align:center;flex-shrink:0}
+.ieff{font-size:6.5px;color:#4a5470;margin-top:1px;line-height:1.5;font-family:monospace}
+.iter-toggle{padding:2px 8px;border-radius:5px;border:1px solid #2a2d3a;background:#13151e;cursor:pointer;font-size:7.5px;font-weight:700;letter-spacing:.03em;transition:all .15s;flex:1}
+.iter-toggle.off{color:#4a5080}.iter-toggle.on{background:rgba(34,197,94,.15);color:#4ade80;border-color:rgba(74,222,128,.4)}
+.iter-rst{font-size:7px;padding:2px 7px;border-radius:99px;border:.5px solid #2a2d3a;background:transparent;cursor:pointer;color:#4a5080;margin-top:5px;display:block}
+.iter-sum{margin-top:5px;padding:4px 6px;background:#13151e;border-radius:6px;border:1px solid #1e2230;font-size:7.5px;line-height:1.6}
+.iter-sum .sm{font-size:9px;font-weight:600;display:block;margin-bottom:1px}
+
+/* CEILING */
+.ceil-btn-main{width:100%;padding:7px 10px;border-radius:8px;border:1.5px solid #3a3200;background:rgba(251,191,36,.07);cursor:pointer;font-size:11px;font-weight:700;color:#d4a017;text-align:center;letter-spacing:.05em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;flex-direction:column;line-height:1.4}
+.ceil-btn-main:hover{background:rgba(251,191,36,.13);color:#fbbf24}
+.ceil-btn-main.open{background:rgba(251,191,36,.16);border-color:#d4a017;box-shadow:0 0 0 3px rgba(251,191,36,.1);color:#fbbf24}
+.ceil-panel{margin-top:7px}
+.ceil-head{font-size:7px;font-weight:600;color:#4a5470;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.crow{display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.clbl{font-size:7px;color:#5a6080;width:72px;flex-shrink:0;line-height:1.3}
+.ccur{font-size:8px;font-weight:600;width:50px;text-align:right;flex-shrink:0;color:#c8d8ff}
+.cceil{font-size:8px;font-weight:600;width:52px;text-align:right;flex-shrink:0;color:#fbbf24}
+.cgap{font-size:7.5px;font-weight:600;width:46px;text-align:right;flex-shrink:0}
+.cbar-w{flex:1;height:4px;background:#1d2130;border-radius:99px;overflow:hidden}
+.cbar-f{height:100%;border-radius:99px;transition:width .3s}
+.ceil-div{border-top:1px solid #1d2130;margin:4px 0}
+.ceil-total{margin-top:6px;padding:5px 7px;background:#13151e;border-radius:7px;border:1px solid #3a3200}
+.ceil-util{display:flex;align-items:center;gap:5px;margin-bottom:4px}
+.util-lbl{font-size:7.5px;color:#5a6080;white-space:nowrap}
+.util-bar-w{flex:1;height:7px;background:#1d2130;border-radius:99px;overflow:hidden}
+.util-bar-f{height:100%;border-radius:99px;transition:width .4s;background:linear-gradient(90deg,#4e9af1,#22d3ee,#4ade80)}
+.util-pct{font-size:11px;font-weight:700;color:#fbbf24;flex-shrink:0}
+.ceil-tgt{font-size:8px;line-height:1.65;color:#c8d8ff}
+.ceil-path{font-size:7px;color:#4ec9b0;font-family:monospace;line-height:1.6;margin-top:3px;padding-top:3px;border-top:1px solid #22253a}
+.ceil-warn{padding:4px 7px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.35);border-radius:6px;font-size:7.5px;color:#fca5a5;line-height:1.6;margin-bottom:5px}
+.ceil-penrose{padding:4px 7px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.3);border-radius:6px;font-size:7.5px;color:#c4b5fd;line-height:1.6;margin-bottom:5px}
+</style>
+</head>
+<body>
+
+<h1>⚖️ DTL · Матрица финансовой позиции · Итераторы · Потолок устойчивого роста · Гостиничный кластер Ставропольского края 2021–2025</h1>
+
+<!-- HOTEL SELECTOR -->
+<div class="hs">
+  <div class="st" style="margin-bottom:5px">🏨 Реальные фирмы кластера · выберите для загрузки параметров · данные РСБУ 2024–2025</div>
+  <div class="hs-row" id="hs-row"></div>
+</div>
+
+<!-- SLIDERS -->
+<div class="cg" id="cg"></div>
+
+<!-- MAIN 2-COL -->
+<div class="main-g">
+  <div class="sec">
+    <div class="st">П&Л · рублей · шкала от выручки</div>
+    <div id="plb"></div>
+    <div class="g3" id="g3"></div>
+    <div class="ls">
+      <div class="st" style="margin-top:6px">Рычаги · DOL × DFL = DTL · Brigham &amp; Gapenski</div>
+      <div class="lr"><div class="ln">ОР DOL</div><div class="lt"><div class="lf" id="dl"></div></div><div class="lv" id="dv">—</div></div>
+      <div class="lr"><div class="ln">ФР DFL</div><div class="lt"><div class="lf" id="fl"></div></div><div class="lv" id="fv">—</div></div>
+      <div class="lr"><div class="ln">СР DTL</div><div class="lt"><div class="lf" id="tl"></div></div><div class="lv" id="tv">—</div></div>
+      <div class="eb" id="eb"><span class="en" id="en">—</span><span id="et">—</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="st">Матрица позиции · РЧА = EBIT÷СК · D/E</div>
+    <div class="mo">
+      <div class="my">УСТОЙЧИВОСТЬ · D/E ↑ лучше</div>
+      <div class="myl" id="myl"></div>
+      <div>
+        <div class="mg" id="mg"></div>
+        <div class="mxl">
+          <div class="mxli">Убыточные<br>РЧА&lt;0%</div>
+          <div class="mxli">Слабые<br>0–10%</div>
+          <div class="mxli">Прибыльные<br>10–20%</div>
+          <div class="mxli">Лидеры<br>≥20%</div>
+        </div>
+        <div class="mxa">РЕЗУЛЬТАТИВНОСТЬ · РЧА = EBIT ÷ Собств. капитал →</div>
+      </div>
+    </div>
+    <div class="mat-leg">
+      <div class="mat-leg-i"><div class="leg-sq" style="outline:2px solid #4e9af1"></div>База</div>
+      <div class="mat-leg-i"><div class="leg-sq" style="outline:2px dashed #f59e0b"></div>Итераторы</div>
+      <div class="mat-leg-i"><div class="leg-sq" style="outline:2px dashed #22d3ee"></div>Фискал.</div>
+      <div class="mat-leg-i"><div class="leg-sq" style="outline:2px dotted #a78bfa"></div>Потолок</div>
+      <div class="mat-leg-i"><div class="leg-sq" style="outline:3px solid #ef4444"></div>Пройден</div>
+    </div>
+    <div class="cross-banner" id="cross-banner">
+      <span class="cb-title">🚨 ПРЕДЕЛ УСТОЙЧИВОГО РОСТА ПРЕВЫШЕН</span>
+      ROA превышает теоретический потолок устойчивого роста. <b>Penrose (1959)</b>: «Receding Managerial Limit» — рост вышел за пределы координационной ёмкости управления. <b>Thermodynamics of Firms (arXiv:1504.07666)</b>: критическая энтропия бизнес-процессов. Ожидаемый исход: фазовый переход с деградацией показателей.
+    </div>
+    <div class="pi"><div class="pn" id="pn">—</div><div class="pd" id="pd">—</div><div class="pc" id="pc"></div></div>
+    <div style="margin-top:6px">
+      <div class="st">Фискальные сценарии · проекция 1 год</div>
+      <div class="fbs" id="fbs"></div>
+      <button class="fr2" id="rst-fisc">↺ Сбросить фискальный сценарий</button>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM 3-COL -->
+<div class="bot-g">
+
+  <div class="sec">
+    <div class="st">🏭 Производственные итераторы · ±10% за шаг</div>
+    <div id="prod-iters"></div>
+    <div class="iter-sum" id="prod-sum"><span class="sm" style="color:#5a6080">Нет активных итераторов</span></div>
+    <button class="iter-rst" onclick="resetGroup('prod')">↺ Сбросить производственные</button>
+  </div>
+
+  <div class="sec">
+    <div class="st">💰 Экономические итераторы · ±10% за шаг</div>
+    <div id="econ-iters"></div>
+    <div class="iter-sum" id="econ-sum"><span class="sm" style="color:#5a6080">Нет активных итераторов</span></div>
+    <button class="iter-rst" onclick="resetGroup('econ')">↺ Сбросить экономические</button>
+  </div>
+
+  <div class="sec">
+    <button class="ceil-btn-main" id="ceil-btn" onclick="toggleCeil()">
+      🏔 ПОТОЛОК БИЗНЕСА
+      <span style="font-size:8px;font-weight:400;opacity:.7">предел устойчивого роста · Penrose (1959) · Springer (2021) · arXiv thermodynamics</span>
+    </button>
+    <div id="ceil-panel" style="display:none"></div>
+  </div>
+
+</div>
+
+<script>
+/* ════════════════════════════════════
+   HOTEL PRESETS (РСБУ 2021-2025)
+════════════════════════════════════ */
+const HOTELS=[
+  {id:'park',name:'Парк Отель Ставрополь',short:'Парк Отель',year:2024,
+   status:'leader',badge:'ЛИДЕР · 5 лет роста',bc:'#4e9af1',
+   p:{rev:51.0,vc:38,fc:4,eq:156.8,de:0.12,r:20,tax:20,div:5},
+   note:'ROS=43% · ROE=14% · 5 прибыльных лет подряд. Устойчивое приближение к потолку Пенроуза без превышения.'},
+  {id:'industria',name:'Индустрия Гостеприимства',short:'Индустрия',year:2024,
+   status:'ceiling_crossed',badge:'🚨 ПОТОЛОК ПРОЙДЕН',bc:'#ef4444',
+   p:{rev:109.2,vc:18,fc:12,eq:77.1,de:0.1,r:20,tax:20,div:0},
+   note:'ROS=70.5% · ROE=99.9% (2024) → коллапс −5.3 млн ЧП (2025). Penrose: управленческий лимит превышен. Thermodynamics: критическая энтропия.'},
+  {id:'evro',name:'Евроотель',short:'Евроотель',year:2025,
+   status:'breakthrough',badge:'ПРОРЫВ 2025',bc:'#4ade80',
+   p:{rev:261.7,vc:65,fc:42,eq:216.9,de:0.6,r:22,tax:20,div:0},
+   note:'Rev=261.7 млн (×7 к 2024) · ROS=23% · ROE=27.8%. Фазовый переход от хронических убытков к лидерству.'},
+  {id:'gard',name:'Гард-Строй (Стела)',short:'Гард-Строй',year:2024,
+   status:'ceiling_crossed',badge:'⚠️ КОЛЛАПС 2025',bc:'#f59e0b',
+   p:{rev:33.1,vc:36,fc:5,eq:91.5,de:0.25,r:20,tax:20,div:5},
+   note:'ROS=45% (2024) → убыток −54.3 млн (2025). Capacity constraints (Springer,2021): триггер фазового перехода с катастрофой.'},
+  {id:'victoria',name:'Виктория',short:'Виктория',year:2024,
+   status:'niche_ceiling',badge:'ПОТОЛОК НИШИ',bc:'#7eb8f7',
+   p:{rev:5.4,vc:25,fc:0.6,eq:13.5,de:0.15,r:20,tax:20,div:10},
+   note:'ROS=65.9% · ROE=26.5%. Micro-отель у предела ниши. Penrose: насыщение управленческой ёмкости малого масштаба.'},
+  {id:'onegin',name:'Онегин-Ставрополь',short:'Онегин',year:2025,
+   status:'recovering',badge:'ВОССТАНОВЛЕНИЕ',bc:'#fbbf24',
+   p:{rev:67.2,vc:70,fc:18,eq:15.0,de:2.8,r:22,tax:20,div:0},
+   note:'ROS=22.1% · реальный СК отрицателен (−10.6 млн). Моделирование: структурная реабилитация. Далеко от потолка.'},
+  {id:'turist',name:'Гост. Турист',short:'Турист',year:2024,
+   status:'zombie_profitable',badge:'ОТРИЦ. КАПИТАЛ',bc:'#fbbf24',
+   p:{rev:100.5,vc:68,fc:24,eq:35.0,de:3.5,r:22,tax:20,div:0},
+   note:'ROS=38.8% при реальном отриц. СК (−79.3 млн). Рычаг инвертирован структурно. Используется условный минимальный СК.'},
+  {id:'kordon',name:'Кордон (Интурист)',short:'Кордон',year:2024,
+   status:'below_base',badge:'НИЖЕ БАЗЫ',bc:'#5a6080',
+   p:{rev:23.5,vc:60,fc:4,eq:18.2,de:0.9,r:22,tax:20,div:0},
+   note:'ROS=4.1% · ROE=5.3%. Хроническая низкая маржа. Ограничения спроса и операционной эффективности. Далеко от потолка.'},
+];
+
+/* ════════════════════════════════════
+   CELLS & CONSTANTS
+════════════════════════════════════ */
+const CE=[
+  {r:0,c:0,z:'d',nm:'Консерватор',ef:'n',ds:'Устойчив, убыточен. Грант → EBIT↑ → РЧА↑.'},
+  {r:0,c:1,z:'s',nm:'Скрытый чемпион',ef:'u',ds:'Высокая устойчивость, слабая доходность. Кешбэк → выручка↑.'},
+  {r:0,c:2,z:'s',nm:'Чемпион роста',ef:'n',ds:'Оптимальный баланс. Рост налогов — прямой вред позиции.'},
+  {r:0,c:3,z:'s',nm:'Лидер рынка',ef:'m',ds:'Флагман. ГЧП усиляет. Давление → уход капитала.'},
+  {r:1,c:0,z:'k',nm:'Деградирующий',ef:'d',ds:'Умеренный долг + убыток. Нецелевая субсидия = моральный риск.'},
+  {r:1,c:1,z:'d',nm:'Устойч. середняк',ef:'u',ds:'Базовый тип. Льготный кредит + льгота → ↗↗.'},
+  {r:1,c:2,z:'s',nm:'Устойчивый успех',ef:'u',ds:'Хороший баланс. Субсидия ставки → ЭФР↑ → НРП↑.'},
+  {r:1,c:3,z:'s',nm:'Магнит инвестиций',ef:'u',ds:'Привлекает капитал. Барьеры — ослабление позиции.'},
+  {r:2,c:0,z:'k',nm:'Хрон. убыточный',ef:'d',ds:'Высокий долг + убыток. Субсидия без санации = потеря.'},
+  {r:2,c:1,z:'k',nm:'Хрон. слабый',ef:'d',ds:'ЭФР отрицательный. Рост ставки ЦБ — немедленный удар.'},
+  {r:2,c:2,z:'d',nm:'Рискованный',ef:'m',ds:'Зарабатывает, но хрупко. Субсидия ставки удерживает ЭФР>0.'},
+  {r:2,c:3,z:'s',nm:'Агрессивный',ef:'m',ds:'Высокий РЧА, опасный рычаг. Рост ставки → падение.'},
+  {r:3,c:0,z:'k',nm:'Зомби',ef:'d',ds:'Несостоятелен. Субсидия = потеря. Управляемый выход.'},
+  {r:3,c:1,z:'k',nm:'Преддефолтный',ef:'d',ds:'На грани. Реструктуризация — единственный шанс.'},
+  {r:3,c:2,z:'k',nm:'Закредитованный',ef:'m',ds:'Зарабатывает, долг уничтожает прибыль. Рефинансирование → ↑↑.'},
+  {r:3,c:3,z:'d',nm:'Хищник на грани',ef:'m',ds:'Экстремальный рычаг. Рост налогов = детонатор дефолта.'},
+];
+const ZBB={s:'rgba(34,197,94,.2)',d:'rgba(251,191,36,.2)',k:'rgba(239,68,68,.2)'};
+const ZBB2={s:'rgba(34,197,94,.55)',d:'rgba(251,191,36,.55)',k:'rgba(239,68,68,.55)'};
+const ZT={s:'#4ade80',d:'#fbbf24',k:'#f87171'};
+const EX={u:'↗ усиливает',d:'↙ ослабляет',n:'→ нейтрально',m:'↗/↘ зависит'};
+const EC={u:'#4ec9b0',d:'#f87171',n:'#5a6080',m:'#fbbf24'};
+
+const FISCAL=[
+  {id:'f1',lb:'↓ Субсидия ставки −5% к r',tp:'p',ap:p=>({...p,r:Math.max(0,p.r-5)}),ch:'r↓→Проценты↓→EBT↑→ЧП↑→НРП↑→СК↑→D/E↓'},
+  {id:'f2',lb:'↓ Налоговая льгота −5% к T',tp:'p',ap:p=>({...p,tax:Math.max(0,p.tax-5)}),ch:'T↓→ЧП↑→НРП↑→СК↑→D/E↓'},
+  {id:'f3',lb:'↓ Субсидия ФОТ/ФЗ −15%',tp:'p',ap:p=>({...p,fc:p.fc*0.85}),ch:'ФЗ↓→EBIT↑→РЧА↑[→] + D/E↓[↑устойч.]'},
+  {id:'f4',lb:'↑ Рост ставки ЦБ +7%',tp:'n',ap:p=>({...p,r:p.r+7}),ch:'r↑→Проценты↑→EBT↓→ЧП↓→НРП↓→D/E↑'},
+  {id:'f5',lb:'↑ Рост налоговой нагрузки +7%',tp:'n',ap:p=>({...p,tax:Math.min(50,p.tax+7)}),ch:'T↑→ЧП↓→НРП↓→СК↓→D/E↑'},
+];
+
+/* PRODUCTION ITERATORS — step=10% */
+const PI=[
+  {id:'nomfond',grp:'prod',type:'ext',name:'Номерной фонд (ввод/вывод)',steps:0,min:-5,max:5,
+   hint:'+10%: Rev×1.10, FC×1.06 (сопутств. расходы). −10%: Rev↓, FC↓.',
+   apply:(p,n)=>{const a=Math.abs(n);return n===0?p:n>0?{...p,rev:p.rev*Math.pow(1.10,a),fc:p.fc*Math.pow(1.06,a)}:{...p,rev:p.rev*Math.pow(0.90,a),fc:p.fc*Math.pow(0.94,a)}}},
+  {id:'zagruzka',grp:'prod',type:'int',name:'Загрузка номерного фонда',steps:0,min:-5,max:5,
+   hint:'+10%: Rev×1.10 без роста затрат. Чистый EBIT-эффект. Норма: 60–85% (Springer,2021).',
+   apply:(p,n)=>{const a=Math.abs(n);return n===0?p:{...p,rev:p.rev*Math.pow(n>0?1.10:0.90,a)}}},
+  {id:'adr',grp:'prod',type:'int',name:'Средний тариф ADR',steps:0,min:-5,max:5,
+   hint:'+10%: Rev×1.10. Рост цены при той же загрузке — чистая маржа. Ceiling: насыщение рынка.',
+   apply:(p,n)=>{const a=Math.abs(n);return n===0?p:{...p,rev:p.rev*Math.pow(n>0?1.10:0.90,a)}}},
+  {id:'ma',grp:'prod',type:'ext',name:'Поглощение (M&A)',steps:0,min:0,max:1,isToggle:true,
+   hint:'Rev+30%, D/E×1.45. Рост выручки компенсируется долговым бременем. Capacity trigger (Springer,2021).',
+   apply:(p,n)=>n===0?p:{...p,rev:p.rev*1.30,de:Math.min(4,p.de*1.45)}},
+];
+
+/* ECONOMIC ITERATORS — step=10% (или −2pp для линейных) */
+const EI=[
+  {id:'vc_opt',grp:'econ',type:'int',name:'Снижение переменных затрат',steps:0,min:-5,max:10,
+   hint:'−2pp за шаг: аутсорсинг, нормирование, автоматизация. Потолок Виктории: VC→25%.',
+   apply:(p,n)=>n===0?p:{...p,vc:Math.max(22,Math.min(92,p.vc-n*2))}},
+  {id:'fc_opt',grp:'econ',type:'int',name:'Оптимизация постоянных затрат',steps:0,min:-5,max:10,
+   hint:'±10% за шаг. −10%: цифровизация, рационализация штата. Предел −40% (FC×0.60).',
+   apply:(p,n)=>{const a=Math.abs(n);return n===0?p:{...p,fc:p.fc*Math.pow(n>0?0.90:1.10,a)}}},
+  {id:'eq_add',grp:'econ',type:'ext',name:'Докапитализация / изъятие СК',steps:0,min:-5,max:10,
+   hint:'±10% за шаг. +10%: взнос учредителей → СК↑ → D/E↓. −10%: изъятие → рычаг↑.',
+   apply:(p,n)=>{const a=Math.abs(n);return n===0?p:{...p,eq:Math.max(1,p.eq*Math.pow(n>0?1.10:0.90,a))}}},
+  {id:'de_red',grp:'econ',type:'str',name:'Снижение долговой нагрузки D/E',steps:0,min:-5,max:10,
+   hint:'±10% D/E за шаг. +10%: досрочное погашение → D/E↓ → устойчивость↑.',
+   apply:(p,n)=>{const a=Math.abs(n);return n===0?p:{...p,de:Math.max(0.05,p.de*Math.pow(n>0?0.90:1.10,a))}}},
+  {id:'r_ref',grp:'econ',type:'str',name:'Рефинансирование ставки',steps:0,min:-5,max:10,
+   hint:'−2pp за шаг: ЭФР↑, НЩ↑, ЧП↑ → НРП↑ → СК↑. Предел: ключ.ставка ЦБ −5pp.',
+   apply:(p,n)=>n===0?p:{...p,r:Math.max(1,Math.min(55,p.r-n*2))}},
+];
+
+const SL=[
+  {id:'sr',key:'rev',min:1,max:500,step:1,def:429,lbl:'📦 Выручка млн ₽',fmt:v=>`${v} млн`},
+  {id:'sv',key:'vc',min:10,max:95,step:1,def:73,lbl:'📊 Перем. затр. %',fmt:v=>`${v}%`},
+  {id:'sf',key:'fc',min:1,max:200,step:1,def:78,lbl:'🏗 Пост. затр. млн',fmt:v=>`${v} млн`},
+  {id:'se',key:'eq',min:1,max:500,step:1,def:137,lbl:'🏦 Собств. кап. млн',fmt:v=>`${v} млн`},
+  {id:'sd',key:'de',min:0.05,max:4,step:0.05,def:0.92,lbl:'⚖️ Плечо D/E',fmt:v=>parseFloat(v).toFixed(2)},
+  {id:'sk',key:'r',min:1,max:55,step:0.5,def:27,lbl:'💳 Ставка r %',fmt:v=>`${v}%`},
+  {id:'st2',key:'tax',min:5,max:50,step:1,def:25,lbl:'🧾 Налог T %',fmt:v=>`${v}%`},
+  {id:'si',key:'div',min:0,max:80,step:5,def:15,lbl:'💎 Дивид. % ЧП',fmt:v=>`${v}%`},
+];
+
+/* ════════════════════════════════════
+   STATE
+════════════════════════════════════ */
+let P={rev:429,vc:73,fc:78,eq:137,de:0.92,r:27,tax:25,div:15};
+let AF=null,CEIL_OPEN=false,ACTIVE_HOTEL=null;
+
+/* ════════════════════════════════════
+   MATH
+════════════════════════════════════ */
+function cc(p){
+  const kmd=p.rev*(1-p.vc/100),ebit=kmd-p.fc;
+  const D=p.eq*p.de,int2=(p.r/100)*D,ebt=ebit-int2;
+  const np=ebt*(1-p.tax/100),div=Math.max(np,0)*p.div/100,nrp=Math.max(np,0)*(1-p.div/100);
+  const roa=p.eq>0?ebit/p.eq*100:0,roe=p.eq>0?np/p.eq*100:0;
+  const bep=(1-p.vc/100)>0?p.fc/(1-p.vc/100):Infinity;
+  const zfp=isFinite(bep)&&p.rev>0?(p.rev-bep)/p.rev*100:0;
+  const ts=(p.r/100)*D*(p.tax/100);
+  const dol=Math.abs(ebit)>0.001?kmd/ebit:Infinity;
+  const dfl=Math.abs(ebt)>0.001?ebit/ebt:Infinity;
+  const dtl=isFinite(dol)&&isFinite(dfl)?dol*dfl:Infinity;
+  const efl=(roa/100-p.r/100)*p.de*(1-p.tax/100)*100;
+  const kmdPct=p.rev>0?kmd/p.rev*100:0;
+  const col=roa<0?0:roa<10?1:roa<20?2:3,row=p.de<0.3?0:p.de<0.7?1:p.de<1.5?2:3;
+  return{kmd,ebit,D,int:int2,ebt,np,div,nrp,roa,roe,bep,zfp,ts,dol,dfl,dtl,efl,kmdPct,col,row};
+}
+function dynPos(p,n=1){
+  let eq=p.eq,de=p.de;
+  for(let i=0;i<n;i++){
+    const kmd=p.rev*(1-p.vc/100),ebit=kmd-p.fc,D=eq*de;
+    const int2=(p.r/100)*D,ebt=ebit-int2,np=ebt*(1-p.tax/100);
+    const nrp=Math.max(np,0)*(1-p.div/100);
+    eq+=nrp;de=eq>0?D/eq:de;
+  }
+  const ebit=p.rev*(1-p.vc/100)-p.fc,roa=eq>0?ebit/eq*100:0;
+  const col=roa<0?0:roa<10?1:roa<20?2:3,row=de<0.3?0:de<0.7?1:de<1.5?2:3;
+  return{row,col,roa,de};
+}
+function applyAllIters(base){
+  let p={...base};
+  PI.forEach(it=>{if(it.steps!==0)p=it.apply(p,it.steps);});
+  EI.forEach(it=>{if(it.steps!==0)p=it.apply(p,it.steps);});
+  return p;
+}
+function anyIterActive(){return PI.some(it=>it.steps!==0)||EI.some(it=>it.steps!==0);}
+
+/* CEILING — эмпирические параметры кластера 2021-2025 + Penrose/Springer/arXiv */
+function calcCeiling(p){
+  const m=cc(p);
+  // Empirically calibrated from Stavropol hotel cluster data:
+  // Sustainable rev growth ceiling: +35% p.a. (Springer 2021: >35% = capacity constraint trigger)
+  const REV_MULT=1.35;
+  // VC floor: Виктория achieves 25%; medium hotels 38-40%; absolute industry floor 22%
+  const VC_FLOOR=Math.max(22,p.vc*0.76);
+  // FC reduction: max 40% via digitalization (empirical: best operators FC/Rev 15-20%)
+  const FC_MULT=0.60;
+  // Penrose managerial limit thresholds (calibrated to cluster data)
+  const PENROSE_ROE_WARN=40;  // warning zone
+  const PENROSE_ROE_CRIT=80;  // critical zone (Индустрия crossed at 100%)
+  const THERMO_ROS_LIMIT=55;  // thermodynamic saturation (arXiv:1504.07666)
+  
+  const revC=p.rev*REV_MULT;
+  const vcC=VC_FLOOR,fcC=p.fc*FC_MULT;
+  const kmdC=revC*(1-vcC/100),ebitC=kmdC-fcC;
+  const D=p.eq*p.de,intC=(p.r/100)*D,ebtC=ebitC-intC;
+  const npC=Math.max(0,ebtC)*(1-p.tax/100),roaC=p.eq>0?ebitC/p.eq*100:0;
+  const kmdPctC=revC>0?kmdC/revC*100:0,eflC=(roaC/100-p.r/100)*p.de*(1-p.tax/100)*100;
+  const colC=roaC<0?0:roaC<10?1:roaC<20?2:3,rowC=p.de<0.3?0:p.de<0.7?1:p.de<1.5?2:3;
+  const revU=Math.min(100,p.rev/revC*100);
+  const roaU=roaC>0?Math.min(100,Math.max(0,m.roa/roaC*100)):m.roa>0?100:0;
+  const ebitU=ebitC>0?Math.min(100,Math.max(0,m.ebit/ebitC*100)):0;
+  const kmdU=kmdPctC>0?Math.min(100,m.kmdPct/kmdPctC*100):0;
+  const overall=(revU*0.3+roaU*0.4+ebitU*0.3);
+  // Check if ROA exceeds ceiling
+  const roaExceeded=m.roa>roaC&&m.roa>0;
+  // Penrose status
+  const roeVal=p.eq>0?m.np/p.eq*100:0;
+  const penroseStatus=roeVal>PENROSE_ROE_CRIT?'КРИТИЧЕСКИЙ':roeVal>PENROSE_ROE_WARN?'ПРЕДУПРЕЖДЕНИЕ':'НОРМА';
+  const rosVal=p.rev>0?m.np/p.rev*100:0;
+  const thermoStatus=rosVal>THERMO_ROS_LIMIT?'ПЕРЕГРУЗКА':rosVal>THERMO_ROS_LIMIT*0.8?'ПРЕДУПРЕЖДЕНИЕ':'НОРМА';
+  return{cur:m,ceil:{rev:revC,vc:vcC,fc:fcC,kmd:kmdC,kmdPct:kmdPctC,ebit:ebitC,ebt:ebtC,np:npC,roa:roaC,efl:eflC,col:colC,row:rowC},
+    util:{rev:revU,roa:roaU,ebit:ebitU,kmd:kmdU,overall},
+    gaps:{rev:revC-p.rev,roa:roaC-m.roa,ebit:ebitC-m.ebit,vc:p.vc-vcC,fc:p.fc-fcC,kmdPct:kmdPctC-m.kmdPct,efl:eflC-m.efl},
+    vcC,fcC,roaC,roaExceeded,penroseStatus,thermoStatus,roeVal,rosVal,
+    PENROSE_ROE_WARN,PENROSE_ROE_CRIT,THERMO_ROS_LIMIT};
+}
+const f1=(v,d=1,s='')=>isFinite(v)?v.toFixed(d)+s:'∞';
+const sStr=(v,d=1,s='')=>v===0?'0'+s:(v>0?'+':'')+v.toFixed(d)+s;
+
+/* ════════════════════════════════════
+   BUILD
+════════════════════════════════════ */
+function buildHotels(){
+  const row=document.getElementById('hs-row');
+  row.innerHTML=HOTELS.map(h=>`
+    <button class="hc" id="hbtn-${h.id}" style="--hc-bc:${h.bc}" onclick="loadHotel('${h.id}')">
+      <span class="hc-badge" style="background:color-mix(in srgb,${h.bc} 20%,transparent);color:${h.bc}">${h.badge}</span>
+      <span class="hc-name">${h.short} · ${h.year}</span>
+      <span class="hc-note">ROS ${(h.p.vc<100?((1-h.p.vc/100)*h.p.rev-h.p.fc)/h.p.rev*100:0).toFixed(0)}% est.</span>
+    </button>`).join('');
+}
+
+function buildSliders(){
+  const g=document.getElementById('cg');
+  g.innerHTML=SL.map(s=>`<div class="ci"><label for="${s.id}">${s.lbl}</label><input type="range" id="${s.id}" min="${s.min}" max="${s.max}" step="${s.step}" value="${s.def}"><div class="cv" id="v${s.id}">${s.fmt(s.def)}</div></div>`).join('');
+  SL.forEach(s=>{document.getElementById(s.id).addEventListener('input',e=>{P[s.key]=parseFloat(e.target.value);document.getElementById('v'+s.id).textContent=s.fmt(e.target.value);ACTIVE_HOTEL=null;document.querySelectorAll('.hc').forEach(b=>b.classList.remove('active'));render();});});
+}
+
+function buildMatrix(){
+  document.getElementById('myl').innerHTML=['Очень высокая<br>D/E&lt;0.3','Высокая<br>D/E 0.3–0.7','Низкая<br>D/E 0.7–1.5','Критическая<br>D/E≥1.5'].map(l=>`<div class="myli">${l}</div>`).join('');
+  const g=document.getElementById('mg');
+  CE.forEach(cd=>{
+    const d=document.createElement('div');d.className='mc2';d.id=`c${cd.r}${cd.c}`;
+    const dist=cd.c-cd.r,al=cd.z==='d'?90:(cd.z==='s'?Math.min(90,55+dist*13):Math.min(80,55+Math.abs(dist)*10));
+    d.style.background=`color-mix(in srgb,${ZBB2[cd.z]} ${al}%,#0f1117)`;
+    d.innerHTML=`<div class="cn" style="color:${ZT[cd.z]}">${cd.nm}</div><div class="cr" style="color:${ZT[cd.z]}">[${cd.r+1},${cd.c+1}]</div><div class="ce" style="color:${EC[cd.ef]}">${EX[cd.ef]}</div>`;
+    g.appendChild(d);
+  });
+  const s=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  s.setAttribute('class','md');s.setAttribute('viewBox','0 0 400 400');s.setAttribute('preserveAspectRatio','none');
+  s.innerHTML=`<defs><marker id="ma" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#3a4060" opacity=".7"/></marker></defs>
+    <line x1="6" y1="6" x2="392" y2="392" stroke="#3a4060" stroke-width="3" stroke-dasharray="12,8" marker-end="url(#ma)" opacity=".45"/>
+    <text x="292" y="68" font-size="28" fill="#4ade80" opacity=".08" text-anchor="middle" font-weight="700">УСПЕХ</text>
+    <text x="108" y="358" font-size="28" fill="#f87171" opacity=".08" text-anchor="middle" font-weight="700">КРИЗИС</text>`;
+  g.appendChild(s);
+}
+
+function buildFiscal(){
+  document.getElementById('fbs').innerHTML=FISCAL.map(f=>`<button class="fb" id="${f.id}" onclick="aF('${f.id}')"><span>${f.lb}</span><span class="fm" id="fm${f.id}">—</span></button>`).join('');
+  document.getElementById('rst-fisc').onclick=()=>{AF=null;FISCAL.forEach(f=>{const b=document.getElementById(f.id);if(b)b.className='fb';});render();};
+}
+
+function buildIters(){
+  const pd=document.getElementById('prod-iters');
+  pd.innerHTML=PI.map(it=>{
+    if(it.isToggle)return`<div class="ir" id="ir-${it.id}"><div class="ir-top"><span class="ir-name">${it.name}</span><span class="ibg ext">ЭКСТЕНСИВ</span></div><div class="ir-ctrl"><button class="iter-toggle off" id="tgl-${it.id}" onclick="toggleIT('${it.id}')">ВЫКЛ</button></div><div class="ieff" id="eff-${it.id}">${it.hint}</div></div>`;
+    const bc={int:'ibg int',ext:'ibg ext',str:'ibg str'}[it.type];
+    const blt={int:'ИНТЕНСИВ',ext:'ЭКСТЕНСИВ',str:'СТРУКТУР'}[it.type];
+    return`<div class="ir" id="ir-${it.id}"><div class="ir-top"><span class="ir-name">${it.name}</span><span class="${bc}">${blt}</span></div><div class="ir-ctrl"><button class="istep" onclick="stepIter('${it.id}',-1)">−</button><div class="ibar-wrap"><div class="ibar-bg"></div><div class="ibar-center"></div><div class="ibar-fill" id="ibf-${it.id}"></div></div><span class="icount" id="ict-${it.id}" style="color:#5a6080">0</span><button class="istep" onclick="stepIter('${it.id}',1)">+</button></div><div class="ieff" id="eff-${it.id}"></div></div>`;
+  }).join('');
+  const ed=document.getElementById('econ-iters');
+  ed.innerHTML=EI.map(it=>{
+    const bc={int:'ibg int',ext:'ibg ext',str:'ibg str'}[it.type];
+    const blt={int:'ИНТЕНСИВ',ext:'ЭКСТЕНСИВ',str:'СТРУКТУР'}[it.type];
+    return`<div class="ir" id="ir-${it.id}"><div class="ir-top"><span class="ir-name">${it.name}</span><span class="${bc}">${blt}</span></div><div class="ir-ctrl"><button class="istep" onclick="stepIter('${it.id}',-1)">−</button><div class="ibar-wrap"><div class="ibar-bg"></div><div class="ibar-center"></div><div class="ibar-fill" id="ibf-${it.id}"></div></div><span class="icount" id="ict-${it.id}" style="color:#5a6080">0</span><button class="istep" onclick="stepIter('${it.id}',1)">+</button></div><div class="ieff" id="eff-${it.id}"></div></div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════
+   RENDER
+════════════════════════════════════ */
+function renderPL(m){
+  const rev=P.rev,pct=v=>v===0?0:Math.max(1.5,Math.abs(v)/rev*100),mn=v=>`${v<0?'−':''}${Math.abs(v).toFixed(1)}м`;
+  const rows=[['Выручка',rev,'#2d6a4f','#52b788'],['Перем.затр.',rev*P.vc/100,'#7b2d00','#ff9270'],
+    ['КМД',m.kmd,m.kmd>=0?'#1d6a4e':'#7b2d00',m.kmd>=0?'#63d4aa':'#ff9270'],
+    ['Пост.затр.',P.fc,'#8a5000','#f4a261'],
+    ['EBIT',m.ebit,m.ebit>=0?'#155e4a':'#7b2d00',m.ebit>=0?'#4ec9b0':'#ff7070'],
+    ['Проценты',m.int,'#5c1a1a','#ff6b6b'],
+    ['EBT',m.ebt,m.ebt>=0?'#1a3a6c':'#7b2d00',m.ebt>=0?'#7eb8f7':'#ff7070'],
+    ['Налог',Math.max(m.ebt,0)*(P.tax/100),'#2a2a35','#9090a0'],
+    ['Чист.приб.',m.np,m.np>=0?'#155e4a':'#7b2d00',m.np>=0?'#4ade80':'#f87171'],
+    ['НРП→СК↑',m.nrp,m.nrp>=0?'#0a3d2e':'#5c1a1a',m.nrp>=0?'#2dd4bf':'#f87171']];
+  document.getElementById('plb').innerHTML=rows.map(([l,v,bg,tc])=>{const w=pct(v),a=mn(v);return`<div class="pr"><div class="pl">${l}</div><div class="pb" style="width:${w}%;background:${bg};color:${tc}">${w>22?a:''}</div>${w<=22?`<div class="ps">${a}</div>`:''}</div>`;}).join('');
+}
+function renderMet(m){
+  const sc=v=>v>=0?'#4ade80':'#f87171';
+  const cs=[['РЧА ROA',f1(m.roa,1,'%'),sc(m.roa)],['ROE',f1(m.roe,1,'%'),sc(m.roe)],['ТБ BEP',isFinite(m.bep)?`${m.bep.toFixed(0)}м`:'∞','#7b8099'],['ЗФП',f1(m.zfp,1,'%'),sc(m.zfp)],['НЩ год',`${m.ts.toFixed(1)}м`,'#7eb8f7'],['НРП→СК',`${m.nrp.toFixed(1)}м`,sc(m.nrp)]];
+  document.getElementById('g3').innerHTML=cs.map(([l,v,c])=>`<div class="mca"><div class="l">${l}</div><div class="v" style="color:${c}">${v}</div></div>`).join('');
+}
+function renderLev(m){
+  const lc=v=>v<=2.5?'#4ade80':v<=5?'#fbbf24':'#f87171';
+  const dv=isFinite(m.dol)?Math.abs(m.dol):10,fv=isFinite(m.dfl)?Math.abs(m.dfl):10,tv=isFinite(m.dtl)?Math.abs(m.dtl):20;
+  document.getElementById('dl').style.cssText=`width:${Math.min(dv/10*100,100)}%;background:${lc(dv)}`;
+  document.getElementById('fl').style.cssText=`width:${Math.min(fv/10*100,100)}%;background:${lc(fv)}`;
+  document.getElementById('tl').style.cssText=`width:${Math.min(tv/20*100,100)}%;background:${lc(tv/2)}`;
+  ['dv','fv','tv'].forEach((id,i)=>{const el=document.getElementById(id),vals=[dv,fv,tv/2];el.textContent=[isFinite(m.dol)?f1(m.dol,2,'×'):'∞',isFinite(m.dfl)?f1(m.dfl,2,'×'):'∞',isFinite(m.dtl)?f1(m.dtl,2,'×'):'∞'][i];el.style.color=lc(vals[i]);});
+  const pos=m.efl>=0;
+  document.getElementById('eb').style.cssText=`background:${pos?'rgba(34,197,94,.09)':'rgba(239,68,68,.09)'};border-color:${pos?'rgba(74,222,128,.3)':'rgba(248,113,113,.3)'}`;
+  document.getElementById('en').textContent=`ЭФР (EFL) = ${f1(m.efl,2,'%')}`;document.getElementById('en').style.color=pos?'#4ade80':'#f87171';
+  document.getElementById('et').textContent=pos?`РЧА ${f1(m.roa,1)}% > r ${P.r}%  →  дифф. +${f1(m.roa-P.r,1)}%  →  рычаг создаёт ценность`:`РЧА ${f1(m.roa,1)}% < r ${P.r}%  →  дифф. ${f1(m.roa-P.r,1)}%  →  ЭФФЕКТ ДУБИНЫ!`;
+  document.getElementById('et').style.color=pos?'#86efac':'#fca5a5';
+}
+function renderMat(baseM,iterM,fiscProj,ceilData){
+  CE.forEach(cd=>{const e=document.getElementById(`c${cd.r}${cd.c}`);if(e){e.classList.remove('cur','iter','fisc','ceil-h','crossed');const cb=e.querySelector('.cross-badge');if(cb)e.removeChild(cb);}});
+  if(CEIL_OPEN&&ceilData&&(ceilData.ceil.col!==baseM.col||ceilData.ceil.row!==baseM.row)){
+    const ce=document.getElementById(`c${ceilData.ceil.row}${ceilData.ceil.col}`);if(ce)ce.classList.add('ceil-h');
+  }
+  if(fiscProj&&(fiscProj.row!==baseM.row||fiscProj.col!==baseM.col)){const fe=document.getElementById(`c${fiscProj.row}${fiscProj.col}`);if(fe)fe.classList.add('fisc');}
+  if(anyIterActive()&&iterM&&(iterM.row!==baseM.row||iterM.col!==baseM.col)){const ie=document.getElementById(`c${iterM.row}${iterM.col}`);if(ie)ie.classList.add('iter');}
+  const be=document.getElementById(`c${baseM.row}${baseM.col}`);
+  const isCrossed=ACTIVE_HOTEL&&(ACTIVE_HOTEL.status==='ceiling_crossed')||(ceilData&&ceilData.roaExceeded);
+  if(be){be.classList.add('cur');if(isCrossed){be.classList.add('crossed');const sp=document.createElement('span');sp.className='cross-badge';sp.textContent='🚨';be.appendChild(sp);}}
+  document.getElementById('cross-banner').className='cross-banner'+(isCrossed?' show':'');
+  const cd=CE.find(c=>c.r===baseM.row&&c.c===baseM.col);if(!cd)return;
+  const hInfo=ACTIVE_HOTEL?` · ${ACTIVE_HOTEL.name} (${ACTIVE_HOTEL.year})`:'';
+  document.getElementById('pn').textContent=`▶ ${cd.nm}  ·  [${baseM.row+1},${baseM.col+1}]  ·  РЧА=${f1(baseM.roa,1)}%  ·  D/E=${P.de.toFixed(2)}${hInfo}`;
+  document.getElementById('pn').style.color=isCrossed?'#f87171':ZT[cd.z];
+  document.getElementById('pd').textContent=ACTIVE_HOTEL?ACTIVE_HOTEL.note:cd.ds;
+  const parts=[];
+  if(anyIterActive()&&iterM){const dr=baseM.row-iterM.row,dc=iterM.col-baseM.col;const ic=CE.find(c=>c.r===iterM.row&&c.c===iterM.col);const mv=[];if(dr>0)mv.push(`↑${dr}ст`);if(dr<0)mv.push(`↓${Math.abs(dr)}ст`);if(dc>0)mv.push(`→${dc}рз`);if(dc<0)mv.push(`←${Math.abs(dc)}рз`);parts.push(`🟡 Итерат.: ${mv.length?mv.join(' · '):'без сдвига'}${ic?' → «'+ic.nm+'»':''}`);}
+  if(AF&&fiscProj){const dr=baseM.row-fiscProj.row,dc=fiscProj.col-baseM.col;const fc2=CE.find(c=>c.r===fiscProj.row&&c.c===fiscProj.col);const mv=[];if(dr>0)mv.push(`↑${dr}ст`);if(dr<0)mv.push(`↓${Math.abs(dr)}ст`);if(dc>0)mv.push(`→${dc}рз`);if(dc<0)mv.push(`←${Math.abs(dc)}рз`);parts.push(`🔵 Фискал.: ${mv.length?mv.join(' · '):'без сдвига'}${fc2?' → «'+fc2.nm+'»':''}\n   ${AF.ch}`);}
+  if(CEIL_OPEN&&ceilData){const c=ceilData.ceil,ic=CE.find(x=>x.r===c.row&&x.c===c.col);parts.push(`🟣 Потолок: РЧА→${f1(c.roa,1)}%${ic?' → «'+ic.nm+'»':''}  ·  Утилизация: ${ceilData.util.overall.toFixed(0)}%`);}
+  document.getElementById('pc').textContent=parts.join('\n');
+}
+function renderFiscalMoves(baseM){
+  FISCAL.forEach(f=>{
+    const pN=f.ap(P),np=dynPos(pN,1),dr=baseM.row-np.row,dc=np.col-baseM.col;
+    const el=document.getElementById('fm'+f.id);if(!el)return;
+    if(dr===0&&dc===0){el.textContent='без сдвига';el.style.color='#4a5470';return;}
+    const pts=[];if(dr>0)pts.push(`↑${dr}ст`);if(dr<0)pts.push(`↓${Math.abs(dr)}ст`);if(dc>0)pts.push(`→${dc}рз`);if(dc<0)pts.push(`←${Math.abs(dc)}рз`);
+    el.textContent=pts.join(' ');el.style.color=f.tp==='p'?'#4ade80':'#f87171';
+  });
+}
+function renderIters(baseM){
+  const allIts=[...PI,...EI];
+  allIts.forEach(it=>{
+    const eff=document.getElementById('eff-'+it.id),ict=document.getElementById('ict-'+it.id),ibf=document.getElementById('ibf-'+it.id);
+    if(it.isToggle){const btn=document.getElementById('tgl-'+it.id);if(btn){btn.className='iter-toggle '+(it.steps?'on':'off');btn.textContent=it.steps?'ВКЛ (нажать=выкл)':'ВЫКЛ (нажать=вкл)';}
+      if(eff){if(it.steps){const pm=it.apply(P,1),pm2=cc(pm),dr=baseM.row-pm2.row,dc=pm2.col-baseM.col;const mv=[];if(dr>0)mv.push(`↑${dr}ряд`);if(dr<0)mv.push(`↓${Math.abs(dr)}ряд`);if(dc>0)mv.push(`→${dc}кол`);if(dc<0)mv.push(`←${Math.abs(dc)}кол`);eff.textContent=`Rev+30% · D/E×1.45 → ${mv.length?mv.join(' · '):'без сдвига'}`;eff.style.color='#f59e0b';}else{eff.textContent=it.hint;eff.style.color='#4a5470';}}return;}
+    if(!ict||!ibf)return;
+    const n=it.steps,ab=Math.abs(n);
+    const pct=Math.min(48,ab/it.max*48);
+    ict.textContent=n===0?'0':(n>0?'+':'')+n;ict.style.color=n===0?'#5a6080':n>0?'#4ade80':'#f87171';
+    ibf.style.width=pct+'%';ibf.style.background=n>0?'#4ade80':'#f87171';
+    ibf.style.left=n>=0?'50%':'auto';ibf.style.right=n<0?'50%':'auto';
+    if(eff){
+      if(n===0){eff.textContent=it.hint;eff.style.color='#4a5470';}
+      else{
+        const pm=it.apply(P,n),pm2=cc(pm),dr=baseM.row-pm2.row,dc=pm2.col-baseM.col;
+        const mv=[];if(dr>0)mv.push(`↑${dr}ряд`);if(dr<0)mv.push(`↓${Math.abs(dr)}ряд`);if(dc>0)mv.push(`→${dc}кол`);if(dc<0)mv.push(`←${Math.abs(dc)}кол`);
+        let detail='';
+        if(['nomfond','zagruzka','adr'].includes(it.id)){const f=Math.pow(n>0?1.10:0.90,ab);detail=`Rev${n>0?'+':'-'}${((Math.abs(f-1))*100).toFixed(0)}%`;}
+        else if(it.id==='vc_opt'){detail=`VC${n>0?'-':'+'}${Math.abs(n)*2}pp→${pm.vc.toFixed(0)}%`;}
+        else if(it.id==='fc_opt'){const f=Math.pow(n>0?0.90:1.10,ab);detail=`FC${n>0?'-':'+'}${((Math.abs(1-f))*100).toFixed(0)}%`;}
+        else if(it.id==='eq_add'){const f=Math.pow(n>0?1.10:0.90,ab);detail=`СК${n>0?'+':'-'}${((Math.abs(f-1))*100).toFixed(0)}%→D/E=${pm.de.toFixed(2)}`;}
+        else if(it.id==='de_red'){const f=Math.pow(n>0?0.90:1.10,ab);detail=`D/E${n>0?'-':'+'}${((Math.abs(1-f))*100).toFixed(0)}%→${pm.de.toFixed(2)}`;}
+        else if(it.id==='r_ref'){detail=`r${n>0?'-':'+'}${Math.abs(n)*2}pp→${pm.r.toFixed(1)}%`;}
+        eff.textContent=detail+(mv.length?`  →  ${mv.join(' · ')}`:'  →  без сдвига')+` · РЧА→${f1(pm2.roa,1)}%`;
+        eff.style.color=n>0?'#4ade80':'#f87171';
+      }
+    }
+  });
+  const iterP=applyAllIters(P),iterM=cc(iterP);
+  const anyP=PI.some(it=>it.steps!==0),anyE=EI.some(it=>it.steps!==0);
+  const ps=document.getElementById('prod-sum'),es=document.getElementById('econ-sum');
+  if(anyP){const dr=baseM.row-iterM.row,dc=iterM.col-baseM.col;const cell=CE.find(c=>c.r===iterM.row&&c.c===iterM.col);const mv=[];if(dr>0)mv.push(`↑${dr}ряд устойч.`);if(dr<0)mv.push(`↓${Math.abs(dr)}ряд`);if(dc>0)mv.push(`→${dc}кол резул.`);if(dc<0)mv.push(`←${Math.abs(dc)}кол`);ps.innerHTML=`<span class="sm" style="color:#f59e0b">🟡 Производственный итог</span><span style="font-size:7.5px;color:#c8d8ff">РЧА: ${f1(baseM.roa,1)}%→${f1(iterM.roa,1)}% · ${mv.length?mv.join(' · '):'без сдвига'}${cell?' · «'+cell.nm+'»':''}</span>`;}
+  else ps.innerHTML=`<span class="sm" style="color:#5a6080">Нет активных производственных итераторов</span>`;
+  if(anyE){const dr=baseM.row-iterM.row,dc=iterM.col-baseM.col;const cell=CE.find(c=>c.r===iterM.row&&c.c===iterM.col);const mv=[];if(dr>0)mv.push(`↑${dr}ряд устойч.`);if(dr<0)mv.push(`↓${Math.abs(dr)}ряд`);if(dc>0)mv.push(`→${dc}кол резул.`);if(dc<0)mv.push(`←${Math.abs(dc)}кол`);es.innerHTML=`<span class="sm" style="color:#f59e0b">🟡 Экономический итог</span><span style="font-size:7.5px;color:#c8d8ff">РЧА: ${f1(baseM.roa,1)}%→${f1(iterM.roa,1)}% · ${mv.length?mv.join(' · '):'без сдвига'}${cell?' · «'+cell.nm+'»':''}</span>`;}
+  else es.innerHTML=`<span class="sm" style="color:#5a6080">Нет активных экономических итераторов</span>`;
+}
+function renderCeiling(p){
+  const panel=document.getElementById('ceil-panel');
+  if(!CEIL_OPEN){panel.style.display='none';return;}
+  panel.style.display='block';
+  const cd=calcCeiling(p),m=cd.cur,c=cd.ceil,g=cd.gaps,u=cd.util;
+  const ceilCell=CE.find(x=>x.r===c.row&&x.c===c.col),curCell=CE.find(x=>x.r===m.row&&x.c===m.col);
+  const mkR=(r)=>`<div class="crow"><div class="clbl">${r.lbl}</div><div class="ccur">${r.cur}</div><div class="cceil">${r.ceil}</div><div class="cgap" style="color:${r.gc?'#4ade80':r.ex?'#f87171':'#f87171'}">${r.gap}</div><div class="cbar-w"><div class="cbar-f" style="width:${Math.min(100,r.util||0).toFixed(0)}%;background:${(r.util||0)>=80?'#4ade80':(r.util||0)>=50?'#fbbf24':'#f87171'}${r.ex?';background:#ef4444':''}"></div></div></div>`;
+  const rows=[
+    {lbl:'Выручка',cur:`${p.rev.toFixed(0)}м`,ceil:`${c.rev.toFixed(0)}м`,gap:sStr(g.rev,0,'м'),util:u.rev,gc:g.rev>=0,ex:false},
+    {lbl:'КМД %',cur:`${f1(m.kmdPct,1)}%`,ceil:`${f1(c.kmdPct,1)}%`,gap:sStr(g.kmdPct,1,'pp'),util:u.kmd,gc:g.kmdPct>=0},
+    {lbl:'EBIT',cur:`${m.ebit.toFixed(0)}м`,ceil:`${c.ebit.toFixed(0)}м`,gap:sStr(g.ebit,0,'м'),util:u.ebit,gc:g.ebit>=0,ex:u.ebit>100},
+    {lbl:'РЧА (ROA)',cur:`${f1(m.roa,1)}%`,ceil:`${f1(c.roa,1)}%`,gap:cd.roaExceeded?'🚨 ПРЕВЫШЕН':sStr(g.roa,1,'pp'),util:cd.roaExceeded?100:u.roa,gc:!cd.roaExceeded,ex:cd.roaExceeded},
+    {lbl:'ЭФР (EFL)',cur:`${f1(m.efl,1)}%`,ceil:`${f1(c.efl,1)}%`,gap:sStr(g.efl,1,'pp'),util:Math.min(100,Math.max(0,c.efl>0?m.efl/c.efl*100:0)),gc:g.efl>=0},
+  ];
+  const rowsRes=[
+    {lbl:'Перем.затр.',cur:`${p.vc.toFixed(0)}%`,ceil:`${cd.vcC.toFixed(0)}%`,gap:sStr(-g.vc,1,'pp'),util:p.vc<=cd.vcC?100:Math.max(0,100-(p.vc-cd.vcC)/(Math.max(1,p.vc-cd.vcC))*50),gc:g.vc>=0},
+    {lbl:'Пост.затр.',cur:`${p.fc.toFixed(0)}м`,ceil:`${cd.fcC.toFixed(0)}м`,gap:sStr(-g.fc,0,'м'),util:Math.max(0,Math.min(100,(1-p.fc/Math.max(1,p.fc*1.5))*100+50)),gc:g.fc>=0},
+  ];
+  const warns=[];
+  if(cd.roaExceeded)warns.push(`<div class="ceil-warn"><b>🚨 РЧА ПРЕВЫШАЕТ ПОТОЛОК</b>: текущая рентабельность ${f1(m.roa,1)}% выше теоретического предела ${f1(c.roa,1)}%. Thermodynamics of Firms (arXiv:1504.07666): критическая энтропия бизнес-процессов. Ожидаемый исход: деградация.</div>`);
+  const penroseColor=cd.penroseStatus==='КРИТИЧЕСКИЙ'?'#f87171':cd.penroseStatus==='ПРЕДУПРЕЖДЕНИЕ'?'#fbbf24':'#4ade80';
+  const thermoColor=cd.thermoStatus==='ПЕРЕГРУЗКА'?'#f87171':cd.thermoStatus==='ПРЕДУПРЕЖДЕНИЕ'?'#fbbf24':'#4ade80';
+  warns.push(`<div class="ceil-penrose"><b>Предел Пенроуза</b> (ROE): ${f1(cd.roeVal,1)}% · Порог: ${cd.PENROSE_ROE_WARN}% (крит.: ${cd.PENROSE_ROE_CRIT}%) · <span style="color:${penroseColor}">${cd.penroseStatus}</span> · <i>Penrose (1959) «The Theory of the Growth of the Firm»</i><br><b>Термодинамика</b> (ROS): ${f1(cd.rosVal,1)}% · Лимит: ${cd.THERMO_ROS_LIMIT}% · <span style="color:${thermoColor}">${cd.thermoStatus}</span> · <i>arXiv:1504.07666 «Thermodynamics of firms' growth»</i></div>`);
+  panel.innerHTML=`${warns.join('')}
+    <div class="ceil-head">Текущее vs Потолок · эмпирика кластера 2021-2025 · Rev+35% · VC→${cd.vcC.toFixed(0)}% · FC×0.60</div>
+    <div class="crow" style="margin-bottom:3px"><div class="clbl" style="font-size:6.5px;color:#3a4060">Показатель</div><div class="ccur" style="font-size:6.5px;color:#3a4060">Текущее</div><div class="cceil" style="font-size:6.5px;color:#3a4060">Потолок</div><div class="cgap" style="font-size:6.5px;color:#3a4060">Зазор</div><div class="cbar-w" style="height:auto"><span style="font-size:6.5px;color:#3a4060">Утилиз.</span></div></div>
+    ${rows.map(mkR).join('')}
+    <div class="ceil-div"></div><div style="font-size:6.5px;color:#3a4060;margin-bottom:3px">Резервы оптимизации затрат</div>
+    ${rowsRes.map(mkR).join('')}
+    <div class="ceil-total">
+      <div class="ceil-util"><span class="util-lbl">Потенциал использован:</span><div class="util-bar-w"><div class="util-bar-f" style="width:${Math.min(100,u.overall).toFixed(0)}%${cd.roaExceeded?';background:#ef4444':''}"></div></div><span class="util-pct" style="color:${cd.roaExceeded?'#f87171':'#fbbf24'}">${cd.roaExceeded?'🚨':Math.min(100,u.overall).toFixed(0)+'%'}</span></div>
+      <div class="ceil-tgt">🎯 Резерв: <b style="color:#fbbf24">${cd.roaExceeded?'потолок превышен':((100-u.overall).toFixed(0)+'% потенциала')} </b>не использовано<br>При потолке → <b style="color:${ceilCell?ZT[ceilCell.z]:'#c8d8ff'}">[${c.row+1},${c.col+1}] ${ceilCell?'«'+ceilCell.nm+'»':''}</b>${(c.row!==m.row||c.col!==m.col)?` · сдвиг от «${curCell?curCell.nm:''}»: ${m.row-c.row>0?`↑${m.row-c.row}ряд `:''}${c.col-m.col>0?`→${c.col-m.col}кол`:''}`:' · позиция в матрице без изменений'}</div>
+      <div class="ceil-path">Путь: Rev+35% (загрузка↑+ADR↑) · VC→${cd.vcC.toFixed(0)}% (аутсорс+норм.) · FC×0.60 (цифровизация)\nРЧА: ${f1(m.roa,1)}%→${f1(c.roa,1)}% · EBIT: ${m.ebit.toFixed(0)}→${c.ebit.toFixed(0)} м · ЧП: ${m.np.toFixed(0)}→${c.np.toFixed(0)} м\nCapacity Constraints (Springer,2021) · Canals, Managing Corporate Growth (OUP,1994)</div>
+    </div>`;
+}
+
+/* ════════════════════════════════════
+   EVENTS
+════════════════════════════════════ */
+function loadHotel(id){
+  const h=HOTELS.find(x=>x.id===id);if(!h)return;
+  ACTIVE_HOTEL=h;
+  Object.assign(P,h.p);
+  PI.forEach(it=>it.steps=0);EI.forEach(it=>it.steps=0);AF=null;
+  FISCAL.forEach(f=>{const b=document.getElementById(f.id);if(b)b.className='fb';});
+  SL.forEach(s=>{const el=document.getElementById(s.id);if(el){el.value=h.p[s.key];document.getElementById('v'+s.id).textContent=s.fmt(h.p[s.key]);}});
+  document.querySelectorAll('.hc').forEach(b=>b.classList.remove('active'));
+  const btn=document.getElementById('hbtn-'+id);if(btn)btn.classList.add('active');
+  if(h.status==='ceiling_crossed'&&!CEIL_OPEN)toggleCeil();
+  render();
+}
+function aF(id){
+  if(AF&&AF.id===id){AF=null;document.getElementById(id).className='fb';}
+  else{if(AF)document.getElementById(AF.id).className='fb';AF=FISCAL.find(f=>f.id===id);document.getElementById(id).className='fb o'+(AF.tp==='p'?'p':'n');}
+  render();
+}
+function stepIter(id,dir){const it=[...PI,...EI].find(x=>x.id===id);if(!it)return;const nv=it.steps+dir;if(nv<it.min||nv>it.max)return;it.steps=nv;ACTIVE_HOTEL=null;document.querySelectorAll('.hc').forEach(b=>b.classList.remove('active'));render();}
+function toggleIT(id){const it=PI.find(x=>x.id===id);if(!it)return;it.steps=it.steps?0:1;render();}
+function resetGroup(grp){if(grp==='prod')PI.forEach(it=>it.steps=0);else EI.forEach(it=>it.steps=0);render();}
+function toggleCeil(){CEIL_OPEN=!CEIL_OPEN;const btn=document.getElementById('ceil-btn');if(btn)btn.className='ceil-btn-main'+(CEIL_OPEN?' open':'');render();}
+
+/* ════════════════════════════════════
+   MAIN RENDER
+════════════════════════════════════ */
+function render(){
+  const baseM=cc(P),iterP=applyAllIters(P),iterM=cc(iterP);
+  const fiscProj=AF?dynPos(AF.ap(P),1):null;
+  const ceilData=calcCeiling(P);
+  renderPL(baseM);renderMet(baseM);renderLev(baseM);
+  renderMat(baseM,iterM,fiscProj,ceilData);
+  renderFiscalMoves(baseM);renderIters(baseM);renderCeiling(P);
+}
+
+/* ════════════════════════════════════
+   INIT
+════════════════════════════════════ */
+buildHotels();buildSliders();buildMatrix();buildFiscal();buildIters();render();
+</script>
+</body>
+</html>
